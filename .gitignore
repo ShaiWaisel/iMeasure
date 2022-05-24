@@ -9,3 +9,8 @@
 /TestOpenTK/pointcloud/Debug
 /TestOpenTK/packages
 /TestOpenTK/pointcloud/*.user
+/TestOpenTK/lib/rs-pointcloud.dll
+/TestOpenTK/lib/rs-pointcloud.exp
+/TestOpenTK/lib/rs-pointcloud.ilk
+/TestOpenTK/lib/rs-pointcloud.lib
+/TestOpenTK/lib/rs-pointcloud.pdb
