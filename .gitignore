@@ -1,0 +1,11 @@
+/TestOpenTK/Common/obj/Debug/*.cache
+/TestOpenTK/TestOpenTK/obj/Debug/*.cache
+/TestOpenTK/Common/bin
+/TestOpenTK/Common/obj
+/TestOpenTK/.vs
+/TestOpenTK/TestOpenTK/obj
+/TestOpenTK/TestOpenTK/bin
+/TestOpenTK/pointcloud/Debug/rs-pointcloud.tlog/*.tlog
+/TestOpenTK/pointcloud/Debug
+/TestOpenTK/packages
+/TestOpenTK/pointcloud/*.user
