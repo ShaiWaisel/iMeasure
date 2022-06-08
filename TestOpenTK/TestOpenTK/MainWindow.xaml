@@ -8,16 +8,22 @@
         mc:Ignorable="d"
         KeyDown="MainWindow_KeyDown"
         MouseMove="MainWindowMouseMove"
-        MouseDown="MainWindowDown"
+        MouseDown="MainWindowMouseDown"
         MouseUp="MainWindowMouseUp"
+        Closed="MainWindowClosed"
         MouseWheel="MainWindowMouseWheel"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="900">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>            
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
@@ -27,11 +33,29 @@
         <Button Margin="10" Padding="5" Click="GrabFrameHandler" HorizontalAlignment="Left" >Grab Frame</Button>
         <Button Grid.Column="1" Margin="10" Padding="5" x:Name="StartStop" Click="StartStopCapture" HorizontalAlignment="Left" Content="Start" />
         <Button Grid.Column="2" Margin="10" Padding="5" Click="GrabImageClicked" HorizontalAlignment="Left">Grab Image</Button>
-        <CheckBox Grid.Column="3" IsThreeState="False" IsChecked="True" x:Name="cutOutliers" VerticalAlignment="Center" Unchecked="CutoutliersChanged" Checked="CutoutliersChanged" VerticalContentAlignment="Center">Cut Outliers</CheckBox>
+        <CheckBox Grid.Column="3" Margin="5 2" IsThreeState="False" IsChecked="True" x:Name="cutOutliers" VerticalAlignment="Center" Unchecked="CutoutliersChanged" Checked="CutoutliersChanged" VerticalContentAlignment="Center">Cut Outliers</CheckBox>
+        <CheckBox Grid.Column="4" Margin="5 2" IsThreeState="False" IsChecked="True" x:Name="drawDistance" Unchecked="drawDistanceUnchecked" VerticalAlignment="Center" VerticalContentAlignment="Center">Measure Distance</CheckBox>
+        <CheckBox Grid.Column="5" Margin="5 2" IsThreeState="False" IsChecked="True" x:Name="rotateModel" VerticalAlignment="Center" VerticalContentAlignment="Center">Rotate model</CheckBox>
+        <Button Grid.Column="6" Margin="5 2" VerticalAlignment="Center" VerticalContentAlignment="Center">Reset model rotation</Button>
+        <CheckBox Grid.Column="7" Margin="5 2" IsThreeState="False" IsChecked="True" x:Name="updateRotCenter" VerticalAlignment="Center" Checked="UpdateRotCenterCheckedUnChecked" Unchecked="UpdateRotCenterCheckedUnChecked" VerticalContentAlignment="Center">Update rot. center</CheckBox>
         <glWpfControl:GLWpfControl
-            Grid.ColumnSpan="5"
-            x:Name="OpenTkControl" 
+            SizeChanged="OpenTkControl_SizeChanged"
+            Grid.ColumnSpan="9"
+            MouseLeftButtonDown="GLWpfControlMouseLeftButtonDown"
+            x:Name="OpenTkControl"
             Unloaded="OpenTkControl_Unloaded"
             Render="OpenTkControl_OnRender" Grid.Row="1"/>
+        <Canvas Grid.ColumnSpan="9" Grid.Row="1" IsHitTestVisible="False" x:Name="drawCanvas">
+            <Line x:Name="distanceLine"
+                Stroke="Red"
+                StrokeThickness="1" />
+            <TextBlock x:Name="measureText"/>
+        </Canvas>
+        <Grid Grid.Row="2" Grid.ColumnSpan="6" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Margin="5 2" MinWidth="100" x:Name="MousePosX" />
+                <TextBlock Margin="5 2" MinWidth="100" x:Name="MousePosY" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

@@ -4,7 +4,7 @@
 #include <librealsense2/rs.hpp> // Include RealSense Cross Platform API
 #include "example.hpp"          // Include short list of convenience functions for rendering
 #include "RsPointcloudCommon.h"
-#include "RSPC.h"
+#include "RSPCSensor.h"
 #include <algorithm>            // std::min, std::max
 
 // Helper functions
@@ -12,7 +12,7 @@ void register_glfw_callbacks(window& app, glfw_state& app_state);
 
 LIBRARY_API void __cdecl Initialize()
 {
-	RSPC::Instance().Initialize();
+	RSPCSensor::Instance().Initialize();
 }
 
 LIBRARY_API bool __cdecl GetNextFrame(
@@ -27,7 +27,7 @@ LIBRARY_API bool __cdecl GetNextFrame(
 	float** textureU,
 	float** textureV)
 {
-	return RSPC::Instance().GetNextFrame(
+	return RSPCSensor::Instance().GetNextFrame(
 		textureFormat, /* rs2_format enum */
 		textureWidth,
 		textureHeight,

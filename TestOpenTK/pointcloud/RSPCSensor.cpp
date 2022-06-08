@@ -1,15 +1,15 @@
-#include "RSPC.h"
+#include "RSPCSensor.h"
 #include "rs_frame.hpp"
+#include "RSPCFrame.h"
 
-
-RSPC& RSPC::Instance()
+RSPCSensor& RSPCSensor::Instance()
 {
-	static RSPC    instance; // Guaranteed to be destroyed.
+	static RSPCSensor    instance; // Guaranteed to be destroyed.
 						  // Instantiated on first use.
 	return instance;
 }
 
-void RSPC::Initialize()
+void RSPCSensor::Initialize()
 {
 	// Start streaming with default recommended configuration
 	try {
@@ -17,11 +17,11 @@ void RSPC::Initialize()
 	}
 	catch (const std::exception ex)
 	{
-
 	}
 }
 
-bool RSPC::GetNextFrame(
+//RSPCFrame
+bool RSPCSensor::GetNextFrame(
 	int* textureFormat, /* rs2_format enum */
 	int* textureWidth,
 	int* textureHeight,

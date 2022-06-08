@@ -2,13 +2,13 @@
 
 #include <librealsense2/rs.hpp> // Include RealSense Cross Platform API
 
-class RSPC
+class RSPCSensor
 {
 public:
-	static RSPC& Instance();
+	static RSPCSensor& Instance();
 
 private:
-	RSPC(): _pointsX(NULL),
+	RSPCSensor(): _pointsX(NULL),
 		_pointsY(NULL),
 		_pointsZ(NULL),
 		_textureU(NULL),
@@ -44,8 +44,8 @@ private:
 	}
 
 public:
-	RSPC(RSPC const&) = delete;
-	void operator=(RSPC const&) = delete;
+	RSPCSensor(RSPCSensor const&) = delete;
+	void operator=(RSPCSensor const&) = delete;
 
 	float* _pointsX;
 	float* _pointsY;

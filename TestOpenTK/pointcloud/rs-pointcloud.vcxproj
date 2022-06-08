@@ -260,11 +260,17 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="RSPCFrame.cpp" />
+    <ClCompile Include="FrameExtratManager.cpp" />
     <ClCompile Include="rs-pointcloud.cpp" />
-    <ClCompile Include="RSPC.cpp" />
-    <ClInclude Include="..\include\RSPC.h" />
+    <ClCompile Include="RSPCSensor.cpp" />
+    <ClCompile Include="Sensor.cpp" />
+    <ClInclude Include="..\include\FrameExtratManager.h" />
+    <ClInclude Include="..\include\RSPCFrame.h" />
+    <ClInclude Include="..\include\RSPCSensor.h" />
     <ClInclude Include="..\include\RsPointcloudCommon.h" />
     <ClInclude Include="example.hpp" />
+    <ClInclude Include="Sensor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
