@@ -990,7 +990,7 @@ namespace TestOpenTK
 
             Vector4 vec;
             vec.X = x;
-            vec.Y =  y;
+            vec.Y = y;
             vec.Z = z;
             vec.W = 1.0f;
 
@@ -1002,7 +1002,7 @@ namespace TestOpenTK
             vec.Y /= vec.W;
 
             xOut = Convert.ToSingle(((vec.X + 1.0) / 2.0) * width);
-            yOut = Convert.ToSingle(((vec.Y + 1.0) / 2.0) * height);
+            yOut = Convert.ToSingle(((-vec.Y + 1.0) / 2.0) * height);
 
             //var dxp = (vec.X - clipx) * width / 2f;
             //var dyp = (-vec.Y - clipy) * height / 2f;
