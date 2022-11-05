@@ -2,7 +2,7 @@ close all; clear all;clc; imtool close all;
 VERBOSE = 1;
 platformID= "BaseP001";
 configFileName = 'C:\Projects\iMeasure\FromErez\Database\!iMeasure.db';
-dataFileName = 'C:\Projects\iMeasure\FromErez\Database\SamCore11.db';
+dataFileName = 'C:\Projects\iMeasure\FromErez\Database\SamCore1.db';
 plyFileName = 'combined.ply';
 SENSORS = 3;
 FRAME = 1;

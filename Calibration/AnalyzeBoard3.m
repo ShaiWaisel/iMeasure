@@ -1,5 +1,5 @@
 % Analyze board with black squares and prevailing colors circles
-function [squares] = AnalyzeBoard3(bigImage, ROI, imageBW, prevailingColor, verbose)
+function [squares, code] = AnalyzeBoard3(bigImage, ROI, imageBW, prevailingColor, verbose)
 image = bigImage(ROI.min(2):ROI.max(2), ROI.min(1):ROI.max(1), :);
 [xnd,map] = rgb2ind(image,3,'nodither');
 img3Colors = ind2rgb(xnd, map);
@@ -8,7 +8,13 @@ G = sum(sum(img3Colors(:,:,2)));
 B = sum(sum(img3Colors(:,:,3)));
 M = max([R,G,B]);
 N = min([R,G,B]);
+code = 1;
 [corners, boardSize] = detectCheckerboardPoints(img3Colors, 'HighDistortion',true,'PartialDetections',true, 'MinCornerMetric',0.18);
+if ((boardSize(1,1)) < 2 || (boardSize(1,2)<2))
+    code = 0;
+    squares=[];
+    return;
+end
 
 x = reshape(corners(:,1),boardSize(1)-1,[]);
 y = reshape(corners(:,2),boardSize(1)-1,[]);
@@ -57,7 +63,7 @@ for row=1:NRows-1
         rowNumber = mode (whites);
         for col=1:NCols-1
             squares(row,col).row = rowNumber;
-            if (sum(whites) ~= length(whites)*rowNumber)
+            if (sum(whites) ~= length(whites)*rowNumber) || (rowNumber == 0)
                 squares(row,col).value = 0;
             end
 
@@ -77,7 +83,7 @@ for col=1:NCols-1
         colNumber = mode (blacks);
         for row=1:NRows-1
             squares(row,col).col = colNumber;
-            if (sum(blacks) ~= length(blacks)*colNumber)
+            if (sum(blacks) ~= length(blacks)*colNumber) || (colNumber == 0)
                 squares(row,col).value = 0;
             end
         end

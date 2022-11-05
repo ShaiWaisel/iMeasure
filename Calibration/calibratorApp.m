@@ -1,4 +1,4 @@
-%close all; clear all;clc; imtool close all;
+close all; clear all;clc; imtool close all;
 VERBOSE = 1;
 NOVERBOSE = 0;
 %read frames for all cameras
@@ -18,7 +18,7 @@ exec(connPlatform, newdata);
 
 cameras = [sensor1ID; sensor2ID; sensor3ID];
 
-conn = sqlite('C:\Projects\iMeasure\FromErez\Database\SamCore11.db'); 
+conn = sqlite('C:\Projects\iMeasure\FromErez\Database\SamCore1.db'); 
 for camera=1:size(cameras,1)
     rawData{camera} = sqlread(conn,sprintf('%s_Frames',cameras(camera,:)));
     wall{camera}= [];
@@ -31,7 +31,7 @@ for camera=1:size(cameras,1)
 end
 close(conn);
 % set global calibration
-cameraPosition = [0.7, 0.6, 0.5];
+cameraPosition = [0.7, 0.8, 0.5];
 lookAtPoint = [1.5, 1.5, 0.5];
 squareSize = 0.1;
 boardSize = 1.5;
@@ -45,12 +45,12 @@ U=[];
 V=[];
 tform = affine3d;
 loop = 0;
-for frame=1:FRAMES
+for frame=5:FRAMES
     for camera=1:size(cameras,1)
         [original, u, v, img] = GrabFrameData(rawData{camera}, frame);
         Uval{camera} = [Uval{camera}; u];
         Vval{camera} = [Vval{camera}; v];
-        if (frame == 1)
+        if (frame == 5)
             wall{camera} = original;
         else
             wall{camera} = pccat([wall{camera}, original]);
@@ -62,30 +62,32 @@ if (VERBOSE)
     hAxes = gca;
 end;
 for camera=1:size(cameras,1)
-    [~, ~, ~, image{camera}] = GrabFrameData(rawData{camera},1);
+    [~, ~, ~, image{camera}] = GrabFrameData(rawData{camera},5);
     for colorCode=1:4
         if (size(transMats{camera},1) >= 0)
             [code, ROI, mask] = DetectColors(image{camera},colorCode, NOVERBOSE);
             if (code == 1)
                 % found colorCode area
-                squares =  AnalyzeBoard3(image{camera}, ROI, mask, colorCode, NOVERBOSE);
-                for i=1:size(squares,1)
-                    for j=1:size(squares,2)
-                        if (squares(i,j).value > 0)
-                            center2D = mean(squares(i,j).quad);
-                            featuresIdxs = Features(Uval{camera}, Vval{camera}, image{camera}, center2D);
-                            if (size(featuresIdxs,1) > 0)
-                                center3D = wall{camera}.Location(featuresIdxs,:);
-                                moving{camera} = [moving{camera}; center3D];
-                                switch colorCode
-                                    case 1
-                                        fixed{camera} = [fixed{camera}; reshape(worldGrid.rGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
-                                    case 2 
-                                        fixed{camera} = [fixed{camera}; reshape(worldGrid.gGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
-                                    case 3 
-                                        fixed{camera} = [fixed{camera}; reshape(worldGrid.bGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
-                                    case 4 
-                                        fixed{camera} = [fixed{camera}; reshape(worldGrid.yGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
+                [squares, code] =  AnalyzeBoard3(image{camera}, ROI, mask, colorCode, NOVERBOSE);
+                if (code == 1)
+                    for i=1:size(squares,1)
+                        for j=1:size(squares,2)
+                            if (squares(i,j).value > 0)
+                                center2D = mean(squares(i,j).quad);
+                                featuresIdxs = Features(Uval{camera}, Vval{camera}, image{camera}, center2D);
+                                if (size(featuresIdxs,1) > 0)
+                                    center3D = wall{camera}.Location(featuresIdxs,:);
+                                    moving{camera} = [moving{camera}; center3D];
+                                    switch colorCode
+                                        case 1
+                                            fixed{camera} = [fixed{camera}; reshape(worldGrid.rGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
+                                        case 2 
+                                            fixed{camera} = [fixed{camera}; reshape(worldGrid.gGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
+                                        case 3 
+                                            fixed{camera} = [fixed{camera}; reshape(worldGrid.bGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
+                                        case 4 
+                                            fixed{camera} = [fixed{camera}; reshape(worldGrid.yGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
+                                    end
                                 end
                             end
                         end
@@ -144,7 +146,7 @@ for camera=1:size(cameras,1)
     %transWall{camera} = pctransform(cloud4, tform);
 end
 close(conn);
-player = pcplayer([-1.5 1.5], [-1.5 1.5], [0 1]);
+player = pcplayer([-1.5 1.5], [-1.5 1.5], [-1 1]);
 walls = pccat([transWall{1} transWall{2} transWall{3}]);
 view(player, walls);
 return;
