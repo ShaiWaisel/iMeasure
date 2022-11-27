@@ -1,0 +1,30 @@
+clear all;
+close all;
+clc;
+load room.mat;
+ptc = scannedModel;
+maxAngularDistance = 45;
+maxDistance = 0.03;
+refAxis = [1 0 0];
+[plane,inlierIndices,outlierIndices] = pcfitplane(ptc, maxDistance,refAxis,maxAngularDistance);
+p1 = select(ptc, inlierIndices);
+figure; pcshow(p1);axis equal;
+axis = cross(plane.Normal, refAxis)
+ang = acos(dot(refAxis, plane.Normal))
+axisa = [axis, ang]
+tf = axang2tform(axisa)
+tm = affinetform3d(tf)
+ptc = pctransform(ptc,tm);
+refAxis = [0 1 0 0];
+[plane,inlierIndices,outlierIndices] = pcfitplane(ptc, maxDistance,refAxis,maxAngularDistance);
+p1 = select(ptc, inlierIndices);
+figure; pcshow(p1);axis equal;
+axis = cross(plane.Normal, refAxis)
+ang = acos(dot(refAxis, plane.Normal))
+axisa = [axis, ang]
+tf = axang2tform(axisa)
+tm = affinetform3d(tf)
+ptc = pctransform(ptc,tm);
+figure, pcshow(pt)
+pp=pcplayer([-5 5],[-5 5],[-2 2])
+view(pp,pt)
