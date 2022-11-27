@@ -23,8 +23,8 @@ for x=ptc.XLimits(2):-stepx:ptc.XLimits(1)
     testP = [x,ptc.YLimits(2),Z];
     [TestPointsIndices, dists] = findNearestNeighbors(ptc, testP,neighbors); %averaging K closest neighbours
     m = mean(ptc.Location(TestPointsIndices, :),1);
-    if (norm(m-testP) < tolerance)
-        poly = [poly; m(1:2),Z];
+    if (norm(m-testP) < tolerance )
+        poly = [poly; m(1:2),Z]; 
     end
 end
 for y=ptc.YLimits(2):-stepy:ptc.YLimits(1)
