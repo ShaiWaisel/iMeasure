@@ -42,7 +42,7 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
         
         original = pccat(clouds);
     %    [planes, modified, planars, bounds{loop}, edges{loop}, corners{loop}] = SetPlanarAreas(original, 0.01, 20000);
-        [planes, modified, planars, bounds{loop}, edges{loop}, corners{loop}] = SetPlanarAreas(original, params.PlaneError, params.PlanePoints);
+        [planes, modified, planars, bounds{loop}, edges{loop}, corners{loop}] = SetPlanarAreas(original, params.PlaneError, params.PlanePoints, 0);
         if (size(planes,1) > 2) && (blurred < 0.4)
             goodShotIndex = goodShotIndex + 1;
             fprintf('Input frame  %d, points %d, planes %d\n',loop, size(original.Location,1), size(planes,1));
@@ -83,13 +83,15 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
         newFrame = [];
         for sensor=1:SENSORS
             newPoints = SelectExtended(tFrames{frame, sensor}, rotm2eul(tMats{frame}.T(1:3,1:3)));
+            if (~isempty(newPoints.Location))
             %newPoints = pctransform(tFrames{frame, sensor}, tform);
-            mat = transMats{sensor}; 
-            tf = affinetform3d(mat');
-            framePoints = pctransform(tFrames{frame, sensor}, tf);
-            newPoints = pctransform(newPoints, tf);
-            scannedFrame = pccat([scannedFrame, framePoints]);
-            newFrame = pccat([newFrame, newPoints]);
+                mat = transMats{sensor}; 
+                tf = affinetform3d(mat');
+                framePoints = pctransform(tFrames{frame, sensor}, tf);
+                newPoints = pctransform(newPoints, tf);
+                scannedFrame = pccat([scannedFrame, framePoints]);
+                newFrame = pccat([newFrame, newPoints]);
+            end
         end
         accumTform.T = tform.T * accumTform.T;
     
@@ -169,7 +171,7 @@ function [ptc, fu, fv, image] = GrabFrameData(data, frame, filterMargins)
 end
 
 
-function [planes, modified, planars, boundsList, edges, corners] = SetPlanarAreas(ptc, maxDistance, planeInPixels)
+function [planes, modified, planars, boundsList, edges, corners] = SetPlanarAreas(ptc, maxDistance, planeInPixels, snapNormal)
     referenceVector = [0,1,0];
     maxAngularDistance = 80;
     modified = 0;
@@ -186,7 +188,19 @@ function [planes, modified, planars, boundsList, edges, corners] = SetPlanarArea
                 plane.Parameters(2)*planar.Location(:,2) + ...
                 plane.Parameters(3)*planar.Location(:,3) + ...
                 plane.Parameters(4);
-            newLocs = planar.Location - plane.Normal .* distFromPlane;   
+            if (snapNormal) % project point to the closest point on the plane
+                newLocs = planar.Location - plane.Normal .* distFromPlane;   
+            else
+                % project point along ray from sensor alongY
+                points = planar.Location;
+                pointsOnPlane = repmat([-plane.Parameters(4) /plane.Parameters(1) 0 0],size(points,1),1);
+                rays = repmat([0 1 0],size(points,1),1);
+                planeNormals = repmat([plane.Parameters(1) plane.Parameters(2) plane.Parameters(3)],size(points,1),1);
+                % vector form of line_plane_intersection.m
+                d1 = -dot(planeNormals,pointsOnPlane,2);
+                t = -(d1 + dot(planeNormals,points,2)) ./ dot(planeNormals, rays,2);
+                newLocs=points+rays.*t;
+            end
             planars = pccat([planars, newLocs]);
             outliers = select(ptc,outlierIndices);
             outliers.Color = ptc.Color(outlierIndices,:);
@@ -232,20 +246,24 @@ function [planes, modified, planars, boundsList, edges, corners] = SetPlanarArea
 end
 
 function [selected] = SelectExtended(cloud, yawPitchRoll)
-margins = [cloud.XLimits(1),cloud.XLimits(2),cloud.ZLimits(1),cloud.ZLimits(2) ];
-fovX = deg2rad(70);
-spanAng = asin(yawPitchRoll(1));
-        
-    if (yawPitchRoll(1) > 0)
-        margins(2) = cloud.XLimits(2) - 2*spanAng/fovX* (cloud.XLimits(2) - cloud.XLimits(1));
-    else
-        margins(1) = cloud.XLimits(1) - 2*spanAng/fovX* (cloud.XLimits(2) - cloud.XLimits(1)); 
-    end
-    outliers = ((cloud.Location(:,1) < margins(1)) | ...
-                (cloud.Location(:,1) > margins(2)) | ...
-                (cloud.Location(:,3) < margins(3)) | ...
-                (cloud.Location(:,3) > margins(4))) ;
-    selected = select(cloud, outliers);
+if (~isempty(cloud.Location))
+    margins = [cloud.XLimits(1),cloud.XLimits(2),cloud.ZLimits(1),cloud.ZLimits(2) ];
+    fovX = deg2rad(70);
+    spanAng = asin(yawPitchRoll(1));
+            
+        if (yawPitchRoll(1) > 0)
+            margins(2) = cloud.XLimits(2) - 2*spanAng/fovX* (cloud.XLimits(2) - cloud.XLimits(1));
+        else
+            margins(1) = cloud.XLimits(1) - 2*spanAng/fovX* (cloud.XLimits(2) - cloud.XLimits(1)); 
+        end
+        outliers = ((cloud.Location(:,1) < margins(1)) | ...
+                    (cloud.Location(:,1) > margins(2)) | ...
+                    (cloud.Location(:,3) < margins(3)) | ...
+                    (cloud.Location(:,3) > margins(4))) ;
+        selected = select(cloud, outliers);
+else
+    selected = cloud;
+end
     
 end
 

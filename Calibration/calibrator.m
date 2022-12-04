@@ -1,5 +1,5 @@
 close all; clear all;
-conn = sqlite('C:\Projects\iMeasure\FromErez\Database\Calibration_3.db'); 
+conn = sqlite('C:\Projects\iMeasure\FromErez\Database\H001_Calib_22_11_22.db'); 
 leftData = sqlread(conn,'f1381564_Frames');
 rightData = sqlread(conn,'f1371657_Frames');
 backData = sqlread(conn,'f1230436_Frames');
@@ -7,7 +7,7 @@ close(conn);
 cameraPosition = [700, 600, 500];
 lookAtPoint = [1500, 1500, 500];
 squareSize = 100;
-worldGrid = WorldGrid(squareSize, cameraPosition, lookAtPoint);
+%worldGrid = WorldGrid(squareSize, cameraPosition, lookAtPoint);
 
 FRAMES = min(min(size(rightData,1),size(leftData,1)),8);
 cameraPosition = [0.7, 0.7, 0.5];
@@ -96,7 +96,7 @@ function [ptc, fu, fv, image] = GrabFrameData(data, frame)
     rgbH = 720;
     depthW = 640;
     depthH = 480;
-    rgb = data(frame,19);
+    rgb = data(frame,20);
     rgb = cell2mat(rgb.FrameColor);
     rgb = reshape(rgb,3,[]);
     r = reshape(rgb(1,:), rgbW, rgbH)'; 
@@ -104,11 +104,11 @@ function [ptc, fu, fv, image] = GrabFrameData(data, frame)
     b = reshape(rgb(3,:), rgbW, rgbH)';
     image = cat(3, r, g, b);
     %figure, imshow(image);
-    x = (cell2mat(data(frame, 20).FrameX));
-    y = (cell2mat(data(frame, 21).FrameY));
-    z = (cell2mat(data(frame, 22).FrameZ));
-    u = (cell2mat(data(frame, 23).FrameU));
-    v = (cell2mat(data(frame, 24).FrameV));
+    x = (cell2mat(data(frame, 21).FrameX));
+    y = (cell2mat(data(frame, 22).FrameY));
+    z = (cell2mat(data(frame, 23).FrameZ));
+    u = (cell2mat(data(frame, 24).FrameU));
+    v = (cell2mat(data(frame, 25).FrameV));
     fx=typecast(x,'single');
     fy=typecast(y,'single');
     fz=typecast(z,'single');

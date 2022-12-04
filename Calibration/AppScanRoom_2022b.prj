@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="1363716647" file="C:\Projects\iMeasure\Calibration\AppScanRoom_2022b.prj" location="C:\Projects\iMeasure\Calibration" name="AppScanRoom_2022b" preferred-package-location="C:\Projects\iMeasure\Calibration\AppScanRoom_2022b\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+  <configuration build-checksum="2519321032" file="C:\Projects\iMeasure\Calibration\AppScanRoom_2022b.prj" location="C:\Projects\iMeasure\Calibration" name="AppScanRoom_2022b" preferred-package-location="C:\Projects\iMeasure\Calibration\AppScanRoom_2022b\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
     <param.appname>AppScanRoom</param.appname>
     <param.icon />
     <param.icons />
@@ -7,7 +7,7 @@
     <param.authnamewatermark>Shai Waisel</param.authnamewatermark>
     <param.email>shai@graphitech.net</param.email>
     <param.company>iSite Ltd.</param.company>
-    <param.summary>Room scanning application</param.summary>
+    <param.summary>Room scanning application 2022-11-28</param.summary>
     <param.description>Including automatic alignment to axes and DXF section in specific H</param.description>
     <param.screenshot />
     <param.guid />
@@ -41,9 +41,7 @@
 	 
  Input Arguments 
 	 -?  print help on how to use the application 
-	 input arguments 
- Description 
- 	 Including automatic alignment to axes and DXF section in specific H</param.help.text>
+	 input arguments</param.help.text>
     <unset>
       <param.icon />
       <param.icons />
