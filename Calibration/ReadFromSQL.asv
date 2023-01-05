@@ -2,18 +2,8 @@
 function [code, sensors, transMats, rawData, platformData] = ReadFromSQL(configFileName, dataFileName, platformID)
 % Read sensors IDs and transformation matrices from configuration DB
 code = 0;
-sensors = 0;
-transMats = 0; 
-rawData = 0;
-platformData = 0;
-if (~exist(configFileName, 'file'))
-    code = -1;
-    return;
-end
-if (~exist(dataFileName, 'file'))
-    code = -2;
-    return;
-end
+if (~exist('configFileName', 'file'))
+    code = 
 connPlatform = sqlite(configFileName); 
 platforms = sqlread(connPlatform,'Platforms');
 sqlQuery = sprintf('SELECT * FROM Platforms WHERE PlatformID = "%s"', platformID);
@@ -40,14 +30,10 @@ end
 
 % Open data DB and read raw data
 conn = sqlite(dataFileName); 
-try
-    for sensor=1:length(sensors)
-        rawData{sensor} = sqlread(conn,sprintf('%s_Frames',sensors{sensor}));
-        wall{sensor}= [];
-        transWall{sensor}= [];
-    end
-catch
-    code = -4;
+for sensor=1:length(sensors)
+    rawData{sensor} = sqlread(conn,sprintf('%s_Frames',sensors{sensor}));
+    wall{sensor}= [];
+    transWall{sensor}= [];
 end
 close(conn);
 end

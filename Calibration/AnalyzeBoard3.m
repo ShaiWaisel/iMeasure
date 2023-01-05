@@ -20,7 +20,7 @@ x = reshape(corners(:,1),boardSize(1)-1,[]);
 y = reshape(corners(:,2),boardSize(1)-1,[]);
 if (max(x(1,:)) - min(x(1,:))) < (max(x(:,1)) - min(x(:,1)))
     x = x';
-    y = y'
+    y = y';
 end
 if (verbose)
     figure, imshow(img3Colors);hold on;
@@ -56,40 +56,102 @@ for row=1:NRows-1
         end
     end
 end
-%% Set Row value as per the whites
-for row=1:NRows-1
-    whites=[];
-    for col=1:NCols-1
-        if(squares(row,col).background == 1)
+blacks=[];
+whites=[];
+rotated = 0;
+if (size(squares,1) > size(squares,2))
+    % vertical array
+    col = round(size(squares,2) / 2);
+    for row=1:size(squares,1)
+        if (squares(row,col).background == 1)
             whites = [whites; squares(row,col).value];
         end
     end
-    if (size(whites,1)>0)
-        rowNumber = mode (whites);
-        for col=1:NCols-1
-            squares(row,col).row = rowNumber;
-            if (sum(whites) ~= length(whites)*rowNumber) || (rowNumber == 0)
-                squares(row,col).value = 0;
-            end
-
-        end
-    end
-end
-
-%% Set Col value as per the blacks
-for col=1:NCols-1
-    blacks=[];
-    for row=1:NRows-1
-        if(squares(row,col).background == 0)
+    rotated = (sum(diff(whites)) == 0);
+else
+    % horizontal array
+    row = round(size(squares,1) / 2);
+    for col=1:size(squares,2)
+        if (squares(row,col).background == 0)
             blacks = [blacks; squares(row,col).value];
         end
     end
-    if (size(blacks,1)>0)
-        colNumber = mode (blacks);
+    rotated = (sum(diff(blacks)) == 0);
+end
+%% Set Row value as per the whites
+if (rotated)
+    for col=1:NCols-1
+        whites=[];
         for row=1:NRows-1
-            squares(row,col).col = colNumber;
-            if (sum(blacks) ~= length(blacks)*colNumber) || (colNumber == 0)
-                squares(row,col).value = 0;
+            if(squares(row, col).background == 1)
+                whites = [whites; squares(row, col).value];
+            end
+        end
+        if (size(whites,1)>0)
+            rowNumber = mode (whites);
+            for row=1:NRows-1
+                squares(row, col).row = rowNumber;
+                if (sum(whites) ~= length(whites)*rowNumber) || (rowNumber == 0)
+                    squares(row, col).value = 0;
+                end
+    
+            end
+        end
+    end
+else
+    for row=1:NRows-1
+        whites=[];
+        for col=1:NCols-1
+            if(squares(row,col).background == 1)
+                whites = [whites; squares(row,col).value];
+            end
+        end
+        if (size(whites,1)>0)
+            rowNumber = mode (whites);
+            for col=1:NCols-1
+                squares(row,col).row = rowNumber;
+                if (sum(whites) ~= length(whites)*rowNumber) || (rowNumber == 0)
+                    squares(row,col).value = 0;
+                end
+    
+            end
+        end
+    end
+end
+%% Set Col value as per the blacks
+if (rotated)
+    for row=1:NRows-1
+        blacks=[];
+        for col=1:NCols-1
+            if(squares(row,col).background == 0)
+                blacks = [blacks; squares(row,col).value];
+            end
+        end
+        if (size(blacks,1)>0)
+            rowNumber = mode (blacks);
+            for col=1:NCols-1
+                squares(row,col).col = rowNumber;
+                if (sum(blacks) ~= length(blacks)*rowNumber) || (rowNumber == 0)
+                    squares(row,col).value = 0;
+                end
+            end
+        end
+    end
+else
+    for col=1:NCols-1
+        blacks=[];
+        for row=1:NRows-1
+            if(squares(row,col).background == 0)
+                blacks = [blacks; squares(row,col).value];
+            end
+        end
+        if (size(blacks,1)>0)
+            rowNumber = mode (blacks);
+            for row=1:NRows-1
+                squares(row,col).col = rowNumber;
+                if (sum(blacks) ~= length(blacks)*rowNumber) || (rowNumber == 0)
+                    squares(row,col).value = 0;
+                end
             end
         end
     end

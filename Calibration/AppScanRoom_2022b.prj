@@ -7,7 +7,7 @@
     <param.authnamewatermark>Shai Waisel</param.authnamewatermark>
     <param.email>shai@graphitech.net</param.email>
     <param.company>iSite Ltd.</param.company>
-    <param.summary>Room scanning application 2022-11-28</param.summary>
+    <param.summary>Room scanning application 2023-01-05</param.summary>
     <param.description>Including automatic alignment to axes and DXF section in specific H</param.description>
     <param.screenshot />
     <param.guid />
@@ -81,15 +81,6 @@
     <fileset.depfun>
       <file>${PROJECT_ROOT}\AlignCloudToAxes.m</file>
       <file>${PROJECT_ROOT}\blurMetric.m</file>
-      <file>${PROJECT_ROOT}\DXFLib\dxf_aci2rgb.m</file>
-      <file>${PROJECT_ROOT}\DXFLib\dxf_close.m</file>
-      <file>${PROJECT_ROOT}\DXFLib\dxf_open.m</file>
-      <file>${PROJECT_ROOT}\DXFLib\dxf_polyline.m</file>
-      <file>${PROJECT_ROOT}\DXFLib\dxf_print_layer.m</file>
-      <file>${PROJECT_ROOT}\DXFLib\dxf_print_point.m</file>
-      <file>${PROJECT_ROOT}\DXFLib\dxf_print_seqend.m</file>
-      <file>${PROJECT_ROOT}\DXFLib\dxf_print_vertex.m</file>
-      <file>${PROJECT_ROOT}\DXFLib\dxf_rgb2aci.m</file>
       <file>${PROJECT_ROOT}\plane_intersect.m</file>
       <file>${PROJECT_ROOT}\ReadFromSQL.m</file>
       <file>${PROJECT_ROOT}\sliceDXF.m</file>

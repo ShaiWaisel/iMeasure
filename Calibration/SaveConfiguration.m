@@ -1,6 +1,6 @@
 function  SaveConfiguration(sensorsDBfile, platformID, transMats)
 connPlatform = sqlite(sensorsDBfile); 
-for camera=1:size(transMats,1)
+for camera=1:length(transMats)
     sqSensorName = sprintf('Sensor%d_tForm', camera);
     mat = transMats{camera}; 
     calibMats{camera} = mat;

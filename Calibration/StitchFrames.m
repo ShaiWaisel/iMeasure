@@ -16,6 +16,7 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
     fixed.Location = [];
     fullFixed = fixed;
     goodShotIndex = 0;
+    params.FrameGauge.Limits = [frameSpan(1), frameSpan(2)];
     for frame=frameSpan(1):frameSpan(2)
         params.FrameGauge.Value = frame;
         drawnow;

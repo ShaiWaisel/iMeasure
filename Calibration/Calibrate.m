@@ -1,6 +1,6 @@
 function [transMats, calibImgs, transWalls] = Calibrate(configurationFileName, scanFileName, platformID, app, VERBOSE)
 
-[sensors, transMats, rawData, platformData] = ReadFromSQL(configurationFileName, scanFileName, platformID);
+[code, sensors, transMats, rawData, platformData] = ReadFromSQL(configurationFileName, scanFileName, platformID);
 
 for sensor=1:length(sensors)
     wall{sensor}= [];
@@ -25,6 +25,7 @@ boardSize = 1.5;
 FRAMES = size(rawData{1}.ID,1);
 tform = affine3d;
 first = 0;
+
 for frame=1:FRAMES
     blurred = 0;
     for sensor=1:length(sensors)
@@ -52,12 +53,12 @@ end
 if (VERBOSE)
     hSegmentation = figure; axis equal; hold on; 
     hAxes = gca;
-end;
+end
 for sensor=1:length(sensors)
 
     app.TabGroup.SelectedTab = app.TabGroup.Children(sensor);
     ax = findobj(app.TabGroup.SelectedTab.Children,'Type','axes');
-    table = findobj(app.TabGroup.SelectedTab.Children,'Type','uitable')
+    table = findobj(app.TabGroup.SelectedTab.Children,'Type','uitable');
     table.Data = eye(4);
     drawnow;
     [~, ~, ~, image{sensor}] = GrabFrameData(rawData{sensor},first, app.editFrameMargins.Value / 100);
@@ -99,8 +100,8 @@ for sensor=1:length(sensors)
     m=moving{sensor};
     f=fixed{sensor};
     if (size(m,1)>2)
-        [mat, r{sensor}, e{sensor}] = absor(m', f')
-        f1=[f, ones(size(f,1),1)];
+        [mat, r{sensor}, e{sensor}] = absor(m', f');
+        %f1=[f, ones(size(f,1),1)];
         m1=[m, ones(size(m,1),1)];
         transMats{sensor} = mat.M';
         z=m1*mat.M';
@@ -344,7 +345,7 @@ function [featuresIndices] = Features(cloudU, cloudV, image, featuersPos)
     fuv = [featuersPos(:,1) / size(image,2), featuersPos(:,2) / size(image,1)];
     featuresIndices = [];
     for idx=1:size(fuv,1)
-        if (fuv(idx,1) > 0.2) & (fuv(idx,1) < 0.8) & (fuv(idx,2) > 0.2) & (fuv(idx,2) < 0.8)
+        if (fuv(idx,1) > 0.1) & (fuv(idx,1) < 0.9) & (fuv(idx,2) > 0.1) & (fuv(idx,2) < 0.9)
 
             dists = (fuv(idx, 1) - cloudU).*(fuv(idx,1) -cloudU) + (fuv(idx, 2) - cloudV).*(fuv(idx,2) -cloudV);
         

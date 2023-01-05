@@ -86,6 +86,7 @@
       <file>${PROJECT_ROOT}\blurMetric.m</file>
       <file>${PROJECT_ROOT}\Calibrate.m</file>
       <file>${PROJECT_ROOT}\DetectColors.m</file>
+      <file>${PROJECT_ROOT}\icon.png</file>
       <file>${PROJECT_ROOT}\ll_dist3d.m</file>
       <file>${PROJECT_ROOT}\plane_intersect.m</file>
       <file>${PROJECT_ROOT}\ReadFromSQL.m</file>

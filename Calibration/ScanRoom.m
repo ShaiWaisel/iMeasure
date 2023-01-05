@@ -19,7 +19,7 @@ zlimits = [-2 2];
 
 % Read sensors IDs and transformation matrices from configuration DB
 connPlatform = sqlite(configFileName); 
-platforms = sqlread(connPlatform,'Platforms');
+C:\Projects\LightForce\ScanTrimmer
 sqlQuery = sprintf('SELECT * FROM Platforms WHERE PlatformID = "%s"', platformID);
 platformData=table2array(fetch(connPlatform, sqlQuery));
 close(connPlatform);
