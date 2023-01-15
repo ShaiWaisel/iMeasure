@@ -7,7 +7,7 @@
     <param.authnamewatermark>Shai Waisel</param.authnamewatermark>
     <param.email>shai@graphitech.net</param.email>
     <param.company>iMeasure Ltd.</param.company>
-    <param.summary />
+    <param.summary>Version 20230115</param.summary>
     <param.description />
     <param.screenshot />
     <param.guid />
@@ -46,7 +46,6 @@
       <param.icon />
       <param.icons />
       <param.version />
-      <param.summary />
       <param.description />
       <param.screenshot />
       <param.guid />

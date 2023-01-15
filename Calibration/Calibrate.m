@@ -64,9 +64,10 @@ for sensor=1:length(sensors)
     [~, ~, ~, image{sensor}] = GrabFrameData(rawData{sensor},first, app.editFrameMargins.Value / 100);
     imshow(image{sensor},'Parent', ax);
     hold(ax,'on');
+    MIN_PIX_SPOT = 50;
     for colorCode=1:4
         if (size(transMats{sensor},1) >= 0)
-            [code, ROI, mask] = DetectColors(image{sensor},colorCode, VERBOSE);
+            [code, ROI, mask] = DetectColors(image{sensor},colorCode, MIN_PIX_SPOT, VERBOSE);
             if (code == 1)
                 % found colorCode area
                 [squares, code] =  AnalyzeBoard3(image{sensor}, ROI, mask, colorCode, ax, VERBOSE);

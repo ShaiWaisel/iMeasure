@@ -67,7 +67,7 @@ if (size(squares,1) > size(squares,2))
             whites = [whites; squares(row,col).value];
         end
     end
-    rotated = (sum(diff(whites)) == 0);
+    rotated = (length(whites) > 1) && (sum(diff(whites)) == 0);
 else
     % horizontal array
     row = round(size(squares,1) / 2);
@@ -76,7 +76,7 @@ else
             blacks = [blacks; squares(row,col).value];
         end
     end
-    rotated = (sum(diff(blacks)) == 0);
+    rotated = (length(blacks) > 1) && (sum(diff(blacks)) == 0);
 end
 %% Set Row value as per the whites
 if (rotated)
