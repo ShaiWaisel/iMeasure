@@ -1,25 +1,25 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="3696592592" file="C:\Projects\iMeasure\Calibration\AppCalibrator_2022b.prj" location="C:\Projects\iMeasure\Calibration" name="AppCalibrator_2022b" preferred-package-location="C:\Projects\iMeasure\Calibration\AppCalibrator_2022b\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
-    <param.appname>AppCalibrator2</param.appname>
+  <configuration build-checksum="394429988" file="C:\Projects\iMeasure\Calibration\CalibratorApp_2022b.prj" location="C:\Projects\iMeasure\Calibration" name="CalibratorApp_2022b" preferred-package-location="C:\Projects\iMeasure\Calibration\CalibratorApp_2022b\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>Calibration</param.appname>
     <param.icon />
     <param.icons />
     <param.version>1.0</param.version>
-    <param.authnamewatermark>Shai Waisel</param.authnamewatermark>
-    <param.email>shai@graphitech.net</param.email>
-    <param.company>iMeasure Ltd.</param.company>
-    <param.summary>Version 20230115</param.summary>
+    <param.authnamewatermark />
+    <param.email />
+    <param.company />
+    <param.summary />
     <param.description />
     <param.screenshot />
     <param.guid />
-    <param.installpath.string>\iMeasure Ltd.\AppCalibrator2\</param.installpath.string>
+    <param.installpath.string>\Calibration\</param.installpath.string>
     <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
     <param.logo />
     <param.install.notes />
     <param.target.install.notes />
-    <param.intermediate>${PROJECT_ROOT}\AppCalibrator_2022b\for_testing</param.intermediate>
-    <param.files.only>${PROJECT_ROOT}\AppCalibrator_2022b\for_redistribution_files_only</param.files.only>
-    <param.output>${PROJECT_ROOT}\AppCalibrator_2022b\for_redistribution</param.output>
-    <param.logdir>${PROJECT_ROOT}\AppCalibrator_2022b</param.logdir>
+    <param.intermediate>${PROJECT_ROOT}\CalibratorApp_2022b\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\CalibratorApp_2022b\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\CalibratorApp_2022b\for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}\CalibratorApp_2022b</param.logdir>
     <param.enable.clean.build>false</param.enable.clean.build>
     <param.user.defined.mcr.options />
     <param.target.type>subtarget.standalone</param.target.type>
@@ -30,22 +30,26 @@
     <param.web.mcr.name>MyAppInstaller_web</param.web.mcr.name>
     <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
     <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
-    <param.windows.command.prompt>false</param.windows.command.prompt>
+    <param.windows.command.prompt>true</param.windows.command.prompt>
     <param.create.log>false</param.create.log>
     <param.log.file />
     <param.native.matlab>false</param.native.matlab>
     <param.checkbox>false</param.checkbox>
     <param.example />
     <param.help.text>Syntax 
-	  -? 
-	 
+	 Calibration -? 
+	 Calibration varargin 
  Input Arguments 
 	 -?  print help on how to use the application 
-	 input arguments</param.help.text>
+	 varargin  input arguments</param.help.text>
     <unset>
       <param.icon />
       <param.icons />
       <param.version />
+      <param.authnamewatermark />
+      <param.email />
+      <param.company />
+      <param.summary />
       <param.description />
       <param.screenshot />
       <param.guid />
@@ -68,6 +72,7 @@
       <param.web.mcr.name />
       <param.package.mcr.name />
       <param.no.mcr.name />
+      <param.windows.command.prompt />
       <param.create.log />
       <param.log.file />
       <param.native.matlab />
@@ -75,7 +80,7 @@
       <param.example />
     </unset>
     <fileset.main>
-      <file>${PROJECT_ROOT}\AppCalibrator2.mlapp</file>
+      <file>${PROJECT_ROOT}\Calibration.m</file>
     </fileset.main>
     <fileset.resources />
     <fileset.package />
@@ -83,19 +88,17 @@
       <file>${PROJECT_ROOT}\absor.m</file>
       <file>${PROJECT_ROOT}\AnalyzeBoard3.m</file>
       <file>${PROJECT_ROOT}\blurMetric.m</file>
-      <file>${PROJECT_ROOT}\Calibrator.m</file>
       <file>${PROJECT_ROOT}\DetectColors.m</file>
-      <file>${PROJECT_ROOT}\icon.png</file>
+      <file>${PROJECT_ROOT}\DoCalibrate.m</file>
       <file>${PROJECT_ROOT}\ll_dist3d.m</file>
       <file>${PROJECT_ROOT}\plane_intersect.m</file>
       <file>${PROJECT_ROOT}\ReadFromSQLscan.m</file>
-      <file>${PROJECT_ROOT}\SaveConfiguration.m</file>
       <file>${PROJECT_ROOT}\WorldGrid.m</file>
     </fileset.depfun>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\AppCalibrator_2022b\for_testing" name="splash.png" optional="false">C:\Projects\iMeasure\Calibration\AppCalibrator_2022b\for_testing\splash.png</file>
-      <file location="${PROJECT_ROOT}\AppCalibrator_2022b\for_testing" name="AppCalibrator2.exe" optional="false">C:\Projects\iMeasure\Calibration\AppCalibrator_2022b\for_testing\AppCalibrator2.exe</file>
-      <file location="${PROJECT_ROOT}\AppCalibrator_2022b\for_testing" name="readme.txt" optional="true">C:\Projects\iMeasure\Calibration\AppCalibrator_2022b\for_testing\readme.txt</file>
+      <file location="${PROJECT_ROOT}\CalibratorApp_2022b\for_testing" name="splash.png" optional="false">C:\Projects\iMeasure\Calibration\CalibratorApp_2022b\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}\CalibratorApp_2022b\for_testing" name="Calibration.exe" optional="false">C:\Projects\iMeasure\Calibration\CalibratorApp_2022b\for_testing\Calibration.exe</file>
+      <file location="${PROJECT_ROOT}\CalibratorApp_2022b\for_testing" name="readme.txt" optional="true">C:\Projects\iMeasure\Calibration\CalibratorApp_2022b\for_testing\readme.txt</file>
     </build-deliverables>
     <workflow />
     <matlab>

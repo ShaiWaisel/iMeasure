@@ -28,7 +28,7 @@ function [code, ROI, mask] = DetectColors(image, colorCode, minPixSport, verbose
     end
 
     if (colorCode == 2) && (sum(sum(g1)) > 10000)
-        code = 1
+        code = 1;
         [ROI, mask] = Crop(image, g1);
     end
 

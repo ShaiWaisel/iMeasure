@@ -1,6 +1,18 @@
-function [transMats, calibImgs, transWalls] = Calibrate(configurationFileName, scanFileName, platformID, app, VERBOSE)
+function [paramCode, transMats, transWalls] = DoCalibrate(scanFileName, paramsFileName, outputFileName, VERBOSE, app)
+if (~exist(paramsFileName, 'file'))
+    paramCode = -1;
+    return;
+end
+rawData = 0;
 
-[code, sensors, transMats, rawData, platformData] = ReadFromSQL(configurationFileName, scanFileName, platformID);
+[paramCode, sensors, devices, locations, transMats, rawData] = ReadFromSQLscan(scanFileName);
+if (paramCode<0)
+    return;
+end
+fid=fopen(paramsFileName);
+C = textscan(fid,'%f');
+fclose(fid);
+
 
 for sensor=1:length(sensors)
     wall{sensor}= [];
@@ -10,13 +22,28 @@ for sensor=1:length(sensors)
     moving{sensor} = [];
     fixed{sensor} = [];
     transMats{sensor} = [];
+    if (app ~= 0)
+        app.TabGroup.Children(sensor).Title =sensors{sensor};
+    end
 end
 
 % set global calibration
-sensorPosition = [app.editCameraX.Value, app.editCameraY.Value, app.editCameraZ.Value];
-lookAtPoint = [app.editLookAtX.Value, app.editLookAtY.Value, app.editLookAtZ.Value];
-squareSize = app.editSquareSize.Value;
+sensorPosition = C{1}(1:3)';
+lookAtPoint = C{1}(4:6)';
+squareSize = C{1}(7);
+marginsSize = C{1}(8);
 boardSize = 1.5;
+if (app ~= 0)
+    app.editCameraX.Value = sensorPosition(1);
+    app.editCameraY.Value = sensorPosition(2);
+    app.editCameraZ.Value = sensorPosition(3);
+    app.editLookAtX.Value = lookAtPoint(1);
+    app.editLookAtY.Value = lookAtPoint(2);
+    app.editLookAtZ.Value = lookAtPoint(3);
+    app.editSquareSize.Value = squareSize;
+    app.editFrameMargins.Value= marginsSize * 100.0;
+end
+
 
 %create theoretical grid (centers of squares)
 [worldGrid.rGrid, worldGrid.gGrid, worldGrid.bGrid, worldGrid.yGrid] = ...
@@ -25,18 +52,17 @@ boardSize = 1.5;
 FRAMES = min(8,size(rawData{1}.ID,1));
 tform = affine3d;
 first = 0;
-
+ax = 0;
 for frame=1:FRAMES
     blurred = 0;
     for sensor=1:length(sensors)
-        [original{sensor}, u{sensor}, v{sensor}, img{sensor}] = GrabFrameData(rawData{sensor}, frame, app.editFrameMargins.Value / 100);
+        [original{sensor}, u{sensor}, v{sensor}, img{sensor}] = GrabFrameData(rawData{sensor}, frame, marginsSize);
         blurred = max(blurred, blurMetric(img{sensor}));
     end
     if (blurred > 0.38)
          fprintf('Blurred frame %d Sensor %d\n', frame, sensor);
     else
         for sensor=1:length(sensors)
-            calibImgs{sensor} = img{sensor};
             if (~first)
                 wall{sensor} = original{sensor};
                 Uval{sensor} = u{sensor};
@@ -51,19 +77,24 @@ for frame=1:FRAMES
     end
 end
 if (VERBOSE)
-    hSegmentation = figure; axis equal; hold on; 
+    figure; axis equal; hold on; 
     hAxes = gca;
 end
 for sensor=1:length(sensors)
+    if (app ~= 0)
+        app.TabGroup.SelectedTab = app.TabGroup.Children(sensor);
+        ax = findobj(app.TabGroup.SelectedTab.Children,'Type','axes');
+        table = findobj(app.TabGroup.SelectedTab.Children,'Type','uitable');
+        table.Data = eye(4);
+        drawnow;
+    end
 
-    app.TabGroup.SelectedTab = app.TabGroup.Children(sensor);
-    ax = findobj(app.TabGroup.SelectedTab.Children,'Type','axes');
-    table = findobj(app.TabGroup.SelectedTab.Children,'Type','uitable');
-    table.Data = eye(4);
-    drawnow;
-    [~, ~, ~, image{sensor}] = GrabFrameData(rawData{sensor},first, app.editFrameMargins.Value / 100);
-    imshow(image{sensor},'Parent', ax);
-    hold(ax,'on');
+    [~, ~, ~, image{sensor}] = GrabFrameData(rawData{sensor},first, marginsSize);
+    if (app ~= 0)
+        imshow(image{sensor},'Parent', ax);
+        hold(ax,'on');
+    end
+
     MIN_PIX_SPOT = 50;
     for colorCode=1:4
         if (size(transMats{sensor},1) >= 0)
@@ -107,10 +138,10 @@ for sensor=1:length(sensors)
         transMats{sensor} = mat.M';
         z=m1*mat.M';
         if (VERBOSE)
-            hold on; scatter3(hAxes, f(:,1), f(:,2), f(:,3),'ob'); scatter3(hAxes, m(:,1), m(:,2), m(:,3),'+r');
+            scatter3(ax, f(:,1), f(:,2), f(:,3),'ob'); scatter3(ax, m(:,1), m(:,2), m(:,3),'+r');
             for i=1:size(f,1)
                 text(hAxes, f(i,1),f(i,2),f(i,3)+50,num2str(i));
-                    text(hAxes, m(i,1),m(i,2),m(i,3)+50,num2str(i));
+                    text(sz, m(i,1),m(i,2),m(i,3)+50,num2str(i));
             end
             scatter3(hAxes, z(:,1), z(:,2), z(:,3),'*k')
             for i=1:size(f,1)
@@ -122,21 +153,34 @@ for sensor=1:length(sensors)
     end
 
 end
-app.lblMat1err.Text = sprintf('Error (m):   %f',e{1}.errmax);
-app.lblMat1det.Text = sprintf('Determinant: %f',det(transMats{1}));
-app.lblMat2err.Text = sprintf('Error (m):   %f',e{2}.errmax);
-app.lblMat2det.Text = sprintf('Determinant: %f',det(transMats{2}));
-app.lblMat3err.Text = sprintf('Error (m):   %f',e{3}.errmax);
-app.lblMat3det.Text = sprintf('Determinant: %f',det(transMats{3}));
-drawnow;
+if (app ~= 0)
+    app.lblMat1err.Text = sprintf('Error (m):   %f',e{1}.errmax);
+    app.lblMat1det.Text = sprintf('Determinant: %f',det(transMats{1}));
+    app.lblMat2err.Text = sprintf('Error (m):   %f',e{2}.errmax);
+    app.lblMat2det.Text = sprintf('Determinant: %f',det(transMats{2}));
+    app.lblMat3err.Text = sprintf('Error (m):   %f',e{3}.errmax);
+    app.lblMat3det.Text = sprintf('Determinant: %f',det(transMats{3}));
+    drawnow;
+end
+fid = fopen(outputFileName,'wt');
+fprintf(fid, 'Completed,100,OK\n');
 for sensor=1:length(sensors)
     mat = transMats{sensor}; 
+    numbers = reshape(mat,1,[]); 
+    line = sprintf("%s,%s,%s,16,%s\n",sensors{sensor},devices{sensor},locations{sensor},outMat(numbers));
+    fprintf(fid, line);
     tform = affinetform3d(mat');
     transWalls{sensor} = pctransform(wall{sensor}, tform);
 end
+fclose(fid);
 end
 
 % ===================================================================================================
+
+function str = outMat(vec)
+str = sprintf(';%1.5f',vec);
+str = str(2:end);
+end
 
 function [ptc, fu, fv, image] = GrabFrameData(data, frame, filterMargins)
     rgbW = 1280;

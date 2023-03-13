@@ -1,101 +1,191 @@
-close all; clear all;
-conn = sqlite('C:\Projects\iMeasure\FromErez\Database\H001_Calib_22_11_22.db'); 
-leftData = sqlread(conn,'f1381564_Frames');
-rightData = sqlread(conn,'f1371657_Frames');
-backData = sqlread(conn,'f1230436_Frames');
-close(conn);
-cameraPosition = [700, 600, 500];
-lookAtPoint = [1500, 1500, 500];
-squareSize = 100;
-%worldGrid = WorldGrid(squareSize, cameraPosition, lookAtPoint);
+function [paramCode, transMats, transWalls] = Calibrator(scanFileName, paramsFileName, outputFileName, VERBOSE, app)
+if (~exist(paramsFileName, 'file'))
+    paramCode = -1;
+    return;
+end
+rawData = 0;
 
-FRAMES = min(min(size(rightData,1),size(leftData,1)),8);
-cameraPosition = [0.7, 0.7, 0.5];
-originPosition = [0.0, 0.0, 0.5];
-rightAngle = atan2d(cameraPosition(2) - originPosition(2), cameraPosition(1) - originPosition(1));
-s = [0:0.1:1]';
-X = s * cosd(rightAngle);
-Y = norm(cameraPosition - originPosition)' - s * sind(rightAngle);
-Z = [1:-0.1:0]' - cameraPosition(3);
-rightPoints = [X, Y, Z];
-leftAngle = 90.0 - rightAngle;
-X = -s * sind(leftAngle);
-Y = norm(cameraPosition - originPosition) - s * cosd(leftAngle);
-leftPoints = [X, Y, Z];
-centerIdx = 6;
+[paramCode, sensors, devices, locations, transMats, rawData] = ReadFromSQLscan(scanFileName);
+if (paramCode<0)
+    return;
+end
+fid=fopen(paramsFileName);
+C = textscan(fid,'%f');
+fclose(fid);
 
-gridSize = 0.01;
-nonuniformGridSample = 6;
-h2=[];
-rightWall = pointCloud([0,0,0]);
-fullFixed = rightWall;
-scannedModel = rightWall;
-accumTform = affine3d;
-transMats = affine3d;
-model = [];
-tform = affine3d;
-loop = 0;
-[rightWall,rightU, rightV, rightImage] = GrabFrameData(rightData,1); 
-[leftWall,leftU, leftV, leftImage] = GrabFrameData(leftData,1); 
-[backWall,backU, backV, backImage] = GrabFrameData(backData,1); 
-for colorCode=1:4
-    [code, croppedImage, croppedMask] = DetectColors(rightImage,colorCode);
-    if (code == 1)
-        squares =  AnalyzeBoard3(croppedImage, croppedMask, colorCode);
 
+for sensor=1:length(sensors)
+    wall{sensor}= [];
+    transWalls{sensor}= [];
+    Uval{sensor} = [];
+    Vval{sensor} = [];
+    moving{sensor} = [];
+    fixed{sensor} = [];
+    transMats{sensor} = [];
+    if (app ~= 0)
+        app.TabGroup.Children(sensor).Title =sensors{sensor};
     end
 end
-return;
-for frame=2:1:FRAMES
-    [original, u, v, rightImage] = GrabFrameData(rightData, frame);
-    rightU = [rightU; u];
-    rightV = [rightV; v];
-    rightWall = pccat([rightWall, original]);
-    [original, u, v, leftImage] = GrabFrameData(leftData, frame);
-    leftU = [leftU; u];
-    leftV = [leftV; v];
-    leftWall = pccat([leftWall, original]);
-    [original, u, v, backImage] = GrabFrameData(backData, frame);
-    backU = [backU; u];
-    backV = [backV; v];
-    leftWall = pccat([leftWall, original]);
+
+% set global calibration
+sensorPosition = C{1}(1:3)';
+lookAtPoint = C{1}(4:6)';
+squareSize = C{1}(7);
+marginsSize = C{1}(8);
+boardSize = 1.5;
+if (app ~= 0)
+    app.editCameraX.Value = sensorPosition(1);
+    app.editCameraY.Value = sensorPosition(2);
+    app.editCameraZ.Value = sensorPosition(3);
+    app.editLookAtX.Value = lookAtPoint(1);
+    app.editLookAtY.Value = lookAtPoint(2);
+    app.editLookAtZ.Value = lookAtPoint(3);
+    app.editSquareSize.Value = squareSize;
+    app.editFrameMargins.Value= marginsSize * 100.0;
 end
-[movingRight, fixedRight] = DetectCheckerboardRight(rightImage, rightWall, rightU, rightV, centerIdx, rightAngle, originPosition, cameraPosition)
-
-%tform = pcregistericp(moving, fixed, 'Tolerance', [0.1, 0.05], 'InitialTransform', rigid3d(rotz(30), [0,0,0]));
-tformRight = pcregisterndt(movingRight, fixedRight, 1.414);
-rightWall = pctransform(rightWall, tformRight);
-
-[movingLeft, fixedLeft] = DetectCheckerboardLeft(leftImage, leftWall, leftU, leftV, centerIdx, leftAngle, originPosition, cameraPosition)
-tformLeft = pcregisterndt(movingLeft, fixedLeft, 1.414);
-leftWall = pctransform(leftWall, tformLeft);
 
 
-% figure, imshow(rightImage);
-% hold on;
-% scatter(points(:,1), points(:,2),'yo','filled');
-% featuresIndices = Features()
+%create theoretical grid (centers of squares)
+[worldGrid.rGrid, worldGrid.gGrid, worldGrid.bGrid, worldGrid.yGrid] = ...
+    WorldGrid(squareSize, boardSize, sensorPosition, lookAtPoint, VERBOSE);
 
-[planes, modified, planars] = SetPlanarAreas(rightWall, 0.005, 300000);
-%rightWall = pcdownsample(modified, 'gridAverage', 0.0005);
-figure;
-axis equal;
-hold on;
-pcshow(rightWall);
-pcshow(fixedRight, 'MarkerSize',400);
-% return;
-pcshow(leftWall);
-pcshow(fixedLeft, 'MarkerSize',400);
-return;
+FRAMES = min(8,size(rawData{1}.ID,1));
+tform = affine3d;
+first = 0;
+ax = 0;
+for frame=1:FRAMES
+    blurred = 0;
+    for sensor=1:length(sensors)
+        [original{sensor}, u{sensor}, v{sensor}, img{sensor}] = GrabFrameData(rawData{sensor}, frame, marginsSize);
+        blurred = max(blurred, blurMetric(img{sensor}));
+    end
+    if (blurred > 0.38)
+         fprintf('Blurred frame %d Sensor %d\n', frame, sensor);
+    else
+        for sensor=1:length(sensors)
+            if (~first)
+                wall{sensor} = original{sensor};
+                Uval{sensor} = u{sensor};
+                Vval{sensor} = v{sensor};
+            else
+                wall{sensor} = pccat([wall{sensor}, original{sensor}]);
+                Uval{sensor} = [Uval{sensor}; u{sensor}];
+                Vval{sensor} = [Vval{sensor}; v{sensor}];
+            end
+        end
+        first = frame;
+    end
+end
+if (VERBOSE)
+    figure; axis equal; hold on; 
+    hAxes = gca;
+end
+for sensor=1:length(sensors)
+    if (app ~= 0)
+        app.TabGroup.SelectedTab = app.TabGroup.Children(sensor);
+        ax = findobj(app.TabGroup.SelectedTab.Children,'Type','axes');
+        table = findobj(app.TabGroup.SelectedTab.Children,'Type','uitable');
+        table.Data = eye(4);
+        drawnow;
+    end
 
+    [~, ~, ~, image{sensor}] = GrabFrameData(rawData{sensor},first, marginsSize);
+    if (app ~= 0)
+        imshow(image{sensor},'Parent', ax);
+        hold(ax,'on');
+    end
+
+    MIN_PIX_SPOT = 50;
+    for colorCode=1:4
+        if (size(transMats{sensor},1) >= 0)
+            [code, ROI, mask] = DetectColors(image{sensor},colorCode, MIN_PIX_SPOT, VERBOSE);
+            if (code == 1)
+                % found colorCode area
+                [squares, code] =  AnalyzeBoard3(image{sensor}, ROI, mask, colorCode, ax, VERBOSE);
+                if (code == 1)
+                    for i=1:size(squares,1)
+                        for j=1:size(squares,2)
+                            if (squares(i,j).value > 0)
+                                center2D = mean(squares(i,j).quad);
+                                featuresIdxs = Features(Uval{sensor}, Vval{sensor}, image{sensor}, center2D);
+                                if (size(featuresIdxs,1) > 0)
+                                    center3D = wall{sensor}.Location(featuresIdxs,:);
+                                    moving{sensor} = [moving{sensor}; center3D];
+                                    switch colorCode
+                                        case 1
+                                            fixed{sensor} = [fixed{sensor}; reshape(worldGrid.rGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
+                                        case 2 
+                                            fixed{sensor} = [fixed{sensor}; reshape(worldGrid.gGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
+                                        case 3 
+                                            fixed{sensor} = [fixed{sensor}; reshape(worldGrid.bGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
+                                        case 4 
+                                            fixed{sensor} = [fixed{sensor}; reshape(worldGrid.yGrid(squares(i,j).row, squares(i,j).col, :),[], 3)];
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    m=moving{sensor};
+    f=fixed{sensor};
+    if (size(m,1)>2)
+        [mat, r{sensor}, e{sensor}] = absor(m', f');
+        %f1=[f, ones(size(f,1),1)];
+        m1=[m, ones(size(m,1),1)];
+        transMats{sensor} = mat.M';
+        z=m1*mat.M';
+        if (VERBOSE)
+            scatter3(ax, f(:,1), f(:,2), f(:,3),'ob'); scatter3(ax, m(:,1), m(:,2), m(:,3),'+r');
+            for i=1:size(f,1)
+                text(hAxes, f(i,1),f(i,2),f(i,3)+50,num2str(i));
+                    text(sz, m(i,1),m(i,2),m(i,3)+50,num2str(i));
+            end
+            scatter3(hAxes, z(:,1), z(:,2), z(:,3),'*k')
+            for i=1:size(f,1)
+                text(hAxes, f(i,1),f(i,2),f(i,3)+50,num2str(i),'Color','blue');
+                text(hAxes, m(i,1),m(i,2),m(i,3)+50,num2str(i),'Color','red');
+                text(hAxes, z(i,1),z(i,2),z(i,3)+50,num2str(i),'Color','black');
+            end
+        end
+    end
+
+end
+if (app ~= 0)
+    app.lblMat1err.Text = sprintf('Error (m):   %f',e{1}.errmax);
+    app.lblMat1det.Text = sprintf('Determinant: %f',det(transMats{1}));
+    app.lblMat2err.Text = sprintf('Error (m):   %f',e{2}.errmax);
+    app.lblMat2det.Text = sprintf('Determinant: %f',det(transMats{2}));
+    app.lblMat3err.Text = sprintf('Error (m):   %f',e{3}.errmax);
+    app.lblMat3det.Text = sprintf('Determinant: %f',det(transMats{3}));
+    drawnow;
+end
+fid = fopen(outputFileName,'wt');
+fprintf(fid, 'Completed,100,OK\n');
+for sensor=1:length(sensors)
+    mat = transMats{sensor}; 
+    numbers = reshape(mat,1,[]); 
+    line = sprintf("%s,%s,%s,16,%s\n",sensors{sensor},devices{sensor},locations{sensor},outMat(numbers));
+    fprintf(fid, line);
+    tform = affinetform3d(mat');
+    transWalls{sensor} = pctransform(wall{sensor}, tform);
+end
+fclose(fid);
+end
 
 % ===================================================================================================
 
-function [ptc, fu, fv, image] = GrabFrameData(data, frame)
+function str = outMat(vec)
+str = sprintf(';%1.5f',vec);
+str = str(2:end);
+end
+
+function [ptc, fu, fv, image] = GrabFrameData(data, frame, filterMargins)
     rgbW = 1280;
     rgbH = 720;
-    depthW = 640;
-    depthH = 480;
+% build image raw data from DB 
     rgb = data(frame,20);
     rgb = cell2mat(rgb.FrameColor);
     rgb = reshape(rgb,3,[]);
@@ -104,6 +194,7 @@ function [ptc, fu, fv, image] = GrabFrameData(data, frame)
     b = reshape(rgb(3,:), rgbW, rgbH)';
     image = cat(3, r, g, b);
     %figure, imshow(image);
+%read XYZUV data from DB
     x = (cell2mat(data(frame, 21).FrameX));
     y = (cell2mat(data(frame, 22).FrameY));
     z = (cell2mat(data(frame, 23).FrameZ));
@@ -114,18 +205,21 @@ function [ptc, fu, fv, image] = GrabFrameData(data, frame)
     fz=typecast(z,'single');
     fu=typecast(u,'single');
     fv=typecast(v,'single');
-    idx = (fu<0.1) | (fu>0.9) | (fv<0.1) | (fv>0.9);
+%filter out-of-image UV indices    
+    idx = (fu<filterMargins) | (fu>(1.0-filterMargins)) | (fv<filterMargins) | (fv>(1.0-filterMargins));
     fx(idx)=[];
     fy(idx)=[];
     fz(idx) = [];
     fu(idx) = [];
     fv(idx) = [];
     iu = int32(floor(size(image,2)*fu)+1);
-    iv = int32(floor(size(image,1)*fv)+1);
+    iv = min(size(image,1),int32(floor(size(image,1)*fv)+1));
     linIdx = sub2ind(size(image), iv, iu);
+%create points cloud in platform coordinates Z <= -Y, Y <= Z    
     ptc = pointCloud([fx, fz, -fy]);
     ptc.Color=[r(linIdx), g(linIdx), b(linIdx)];
 end
+
 
 %-------------------------------------------------------------------------------------------------
 

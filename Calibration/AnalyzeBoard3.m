@@ -32,22 +32,22 @@ NRows = size(x,1);
 square = struct('color',0,'value',0, 'quad', zeros(4,2),'row',0, 'col', 0);
 [squares(1:NRows, 1:NCols)] =deal(square);
 %% Set color and value per square
-hold(ax,'on');
+if (verbose)
+    hold(ax,'on');
+end
 for row=1:NRows-1
     for col=1:NCols-1
         quad = [x(row,col)+1, y(row,col)+1; x(row+1, col)+1, y(row+1, col); x(row+1, col+1), y(row+1, col+1); x(row, col+1), y(row, col+1)+1];
         if (sum(any(isnan(quad))) == 0)
             [value, background] = GetSquareValues(image, imageBW, quad,prevailingColor, verbose);
-            fprintf('col=%d row=%d color=%d value=%d, background=%d\n', col, row, prevailingColor, value, background);
+            if (verbose)
+                fprintf('col=%d row=%d color=%d value=%d, background=%d\n', col, row, prevailingColor, value, background);
+            end
             quad(:,1) = quad(:,1) + ROI.min(1);
             quad(:,2) = quad(:,2) + ROI.min(2);
-            if (~isempty(ax))
+            if (ax ~= 0)
                 scatter(ax, quad(:,1), quad(:,2),50,'oy', 'filled');
                 drawnow;
-            end
-            if (verbose)
-                figure, imshow(bigImage); hold on;
-                scatter(quad(:,1), quad(:,2),50,'oy', 'filled');
             end
             squares(row,col).color =prevailingColor;
             squares(row,col).value =value;
