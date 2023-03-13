@@ -25,3 +25,7 @@
 /Calibration/DXFLib/*
 /TestOpenTK/*
 /Calibration/Calibration.zip
+bin/Debug
+Calibration/bin
+MATRIXCORESimulator
+Scans
