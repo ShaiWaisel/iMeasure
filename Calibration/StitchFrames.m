@@ -1,4 +1,4 @@
-function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, params)
+function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, params, verbose)
     
     SENSORS = length(sensors);
 %             params.PlaneError = app.editPlaneError.Value;
@@ -16,18 +16,24 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
     fixed.Location = [];
     fullFixed = fixed;
     goodShotIndex = 0;
-    params.FrameGauge.Limits = [frameSpan(1), frameSpan(2)];
+    if (verbose)
+        params.FrameGauge.Limits = [frameSpan(1), frameSpan(2)];
+    end;
     for frame=frameSpan(1):frameSpan(2)
-        params.FrameGauge.Value = frame;
-        drawnow;
+        if (verbose)
+            params.FrameGauge.Value = frame;
+            drawnow;
+        end
         loop = loop + 1;
     
         clouds = [];
         blurred = 0;
         for sensor=1:SENSORS
             [cloud, u, v, img] = GrabFrameData(rawData{sensor}, loop, params.Margins);
-            imshow(img, 'Parent', params.Axes{sensor});
-            drawnow;
+            if (verbose)
+                imshow(img, 'Parent', params.Axes{sensor});
+                drawnow;
+            end
             frameCloud{sensor} = cloud;
             mat = transMats{sensor}; 
             tf = affinetform3d(mat');
@@ -39,7 +45,9 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
             end
         end
         black = img * 0;
+        if (verbose)
             imshow(black, 'Parent', params.Axes{4});
+        end
         
         original = pccat(clouds);
     %    [planes, modified, planars, bounds{loop}, edges{loop}, corners{loop}] = SetPlanarAreas(original, 0.01, 20000);
@@ -73,9 +81,11 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
     
     accumTform = rigid3d;
     scannedModel = model{1};
-    params.DisplayGauge.Value = 1;
-    params.DisplayGauge.Visible = 1;
-    params.DisplayGauge.Limits = [1, size(tMats,2)];
+    if (verbose)
+        params.DisplayGauge.Value = 1;
+        params.DisplayGauge.Visible = 1;
+        params.DisplayGauge.Limits = [1, size(tMats,2)];
+    end
     
     for frame = 2:size(tMats, 2)
         tform = tMats{frame};
@@ -109,8 +119,10 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
         %accumTform.T = tf.T * accumTform.T;
         newFrame = pctransform(newFrame, tf);
         scannedModel = pccat([scannedModel, newFrame]);
-        params.DisplayGauge.Value = frame;
-        drawnow;
+        if (verbose)
+            params.DisplayGauge.Value = frame;
+            drawnow;
+        end
     
     %     points = pctransform(points,tf);
     %         scannedModel = pccat([scannedModel, points]);
@@ -124,7 +136,9 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
         fprintf('Accumulating frame  %d, points %d\n',frame, size(scannedModel.Location,1));
     
     end
-    params.DisplayGauge.Visible = 0;
+    if (verbose)
+        params.DisplayGauge.Visible = 0;
+    end
     % scannedModel = pcdownsample(scannedModel, 'nonuniformGridSample', nonuniformGridSample);
     % scannedModel.Normal = pcnormals(scannedModel); 
     %pcshow(scannedModel,'Parent', lidarPlayer.Axes);

@@ -1,10 +1,10 @@
-function Calibrator(varargin)
+function Scan2PLY(varargin)
 close all; 
 clearvars -except varargin; 
 clc;
 
 if (length(varargin)< 4)
-    disp(sprintf("Usage: CommandCalibration <scanFileName> <parametersFileName> <outputFileName> <verbose [0/1]\n>"));
+    disp(sprintf("Usage: Scan2PLY <scanFileName> <parametersFileName> <outputFileName> <verbose [0/1]\n>"));
     exit(-1);
 end;
 inputFileName = varargin(1);
@@ -27,9 +27,9 @@ dVerbose = str2double(verbose{1});
 disp(sprintf("verbose: %d\n",dVerbose));
 if (dVerbose>0)
     disp('starting app');
-    system(sprintf("CalibratorApp %s %s %s",inputFileName{1},parametersFileName{1},outputFileName{1}));
+    system(sprintf("Scan2PLYApp %s %s %s%s",inputFileName{1},parametersFileName{1},outputFileName{1},"1"));
 else
     disp('running silent')
-    DoCalibrate(inputFileName{1},parametersFileName{1},outputFileName{1}, 0, 0);
+    DoScan2PLY(inputFileName{1},parametersFileName{1},outputFileName{1}, 0);
 end
 exit(0);
