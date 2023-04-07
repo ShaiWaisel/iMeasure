@@ -2,11 +2,6 @@ function Calibrator(varargin)
 close all; 
 clearvars -except varargin; 
 clc;
-
-if (length(varargin)< 4)
-    disp(sprintf("Usage: CommandCalibration <scanFileName> <parametersFileName> <outputFileName> <verbose [0/1]\n>"));
-    exit(-1);
-end;
 inputFileName = varargin(1);
 disp(inputFileName)
 
@@ -27,7 +22,7 @@ dVerbose = str2double(verbose{1});
 disp(sprintf("verbose: %d\n",dVerbose));
 if (dVerbose>0)
     disp('starting app');
-    system(sprintf("CalibratorApp %s %s %s",inputFileName{1},parametersFileName{1},outputFileName{1}));
+    system(sprintf("CalibratorApp %s %s %s 1",inputFileName{1},parametersFileName{1},outputFileName{1}));
 else
     disp('running silent')
     DoCalibrate(inputFileName{1},parametersFileName{1},outputFileName{1}, 0, 0);

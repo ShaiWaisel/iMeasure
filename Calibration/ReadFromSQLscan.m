@@ -13,6 +13,7 @@ if (~exist(dataFileName, 'file'))
 end
 conn = sqlite(dataFileName); 
 platforms = sqlread(conn, 'DEVICEMAPPING');
+matrices = sqlread(conn, 'MatrixParams');
 
 SENSORS = size(platforms,1);
 % Allocate memory
@@ -29,8 +30,9 @@ for i=1:SENSORS
     sensors{i} = platforms{i,1};
     devices{i} = platforms{i,2};
     locations{i} = platforms{i,4};
-    transMats{i} = eye(4);
-end
+    matIdx = find(table2array(matrices(:,2))==devices{i});
+    transMats{i} = sscanf(table2array(matrices(matIdx,5)), '%f;', [4, inf]);
+    end
 
 % Open data DB and read raw data
 try
