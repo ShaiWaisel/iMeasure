@@ -1,25 +1,25 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="1212142006" file="C:\Projects\iMeasure\Calibration\CalibratorApp_2023a.prj" location="C:\Projects\iMeasure\Calibration" name="CalibratorApp_2023a" preferred-package-location="C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
-    <param.appname>Scan2PLYapp</param.appname>
+  <configuration file="C:\Projects\iMeasure\ScanSuite\MatLAB\Calibrator_2023a.prj" location="C:\Projects\iMeasure\ScanSuite\MatLAB" name="Calibrator_2023a" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>Calibrator</param.appname>
     <param.icon />
     <param.icons />
     <param.version>1.0</param.version>
-    <param.authnamewatermark />
+    <param.authnamewatermark>Shai Waisel</param.authnamewatermark>
     <param.email />
-    <param.company />
+    <param.company>iMeasure Ltd.</param.company>
     <param.summary />
     <param.description />
     <param.screenshot />
     <param.guid />
-    <param.installpath.string>\Scan2PLYapp\</param.installpath.string>
+    <param.installpath.string>\iMeasure Ltd.\Calibrator\</param.installpath.string>
     <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
     <param.logo />
     <param.install.notes />
     <param.target.install.notes />
-    <param.intermediate>${PROJECT_ROOT}\CalibratorApp_2023a\for_testing</param.intermediate>
-    <param.files.only>${PROJECT_ROOT}\CalibratorApp_2023a\for_redistribution_files_only</param.files.only>
-    <param.output>${PROJECT_ROOT}\CalibratorApp_2023a\for_redistribution</param.output>
-    <param.logdir>${PROJECT_ROOT}\CalibratorApp_2023a</param.logdir>
+    <param.intermediate>${PROJECT_ROOT}\Calibrator_2023a\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\Calibrator_2023a\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\Calibrator_2023a\for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}\Calibrator_2023a</param.logdir>
     <param.enable.clean.build>false</param.enable.clean.build>
     <param.user.defined.mcr.options />
     <param.target.type>subtarget.standalone</param.target.type>
@@ -37,18 +37,16 @@
     <param.checkbox>false</param.checkbox>
     <param.example />
     <param.help.text>Syntax 
-	  -? 
-	 
+	 Calibrator -? 
+	 Calibrator varargin 
  Input Arguments 
 	 -?  print help on how to use the application 
-	 input arguments</param.help.text>
+	 varargin  input arguments</param.help.text>
     <unset>
       <param.icon />
       <param.icons />
       <param.version />
-      <param.authnamewatermark />
       <param.email />
-      <param.company />
       <param.summary />
       <param.description />
       <param.screenshot />
@@ -80,24 +78,25 @@
       <param.example />
     </unset>
     <fileset.main>
-      <file>${PROJECT_ROOT}\Scan2PLYApp.mlapp</file>
+      <file>${PROJECT_ROOT}\Calibrator.m</file>
     </fileset.main>
     <fileset.resources />
     <fileset.package />
     <fileset.depfun>
-      <file>${PROJECT_ROOT}\AlignCloudToAxes.m</file>
-      <file>${PROJECT_ROOT}\blurMetric.m</file>
-      <file>${PROJECT_ROOT}\DoScan2PLY.m</file>
-      <file>${PROJECT_ROOT}\plane_intersect.m</file>
-      <file>${PROJECT_ROOT}\ReadFromSQLscan.m</file>
-      <file>${PROJECT_ROOT}\ReadScan2PLYparams.m</file>
-      <file>${PROJECT_ROOT}\sliceDXF.m</file>
-      <file>${PROJECT_ROOT}\StitchFrames.m</file>
+      <file>C:\Projects\iMeasure\Calibration\absor.m</file>
+      <file>C:\Projects\iMeasure\Calibration\AnalyzeBoard3.m</file>
+      <file>C:\Projects\iMeasure\Calibration\blurMetric.m</file>
+      <file>C:\Projects\iMeasure\Calibration\DetectColors.m</file>
+      <file>C:\Projects\iMeasure\Calibration\DoCalibrate.m</file>
+      <file>C:\Projects\iMeasure\Calibration\ll_dist3d.m</file>
+      <file>C:\Projects\iMeasure\Calibration\plane_intersect.m</file>
+      <file>C:\Projects\iMeasure\Calibration\ReadFromSQLscan.m</file>
+      <file>C:\Projects\iMeasure\Calibration\WorldGrid.m</file>
     </fileset.depfun>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="readme.txt" optional="true">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\readme.txt</file>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="Scan2PLYapp.exe" optional="false">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\Scan2PLYapp.exe</file>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="splash.png" optional="false">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}\Calibrator_2023a\for_testing" name="Calibrator.exe" optional="false">C:\Projects\iMeasure\ScanSuite\MatLAB\Calibrator_2023a\for_testing\Calibrator.exe</file>
+      <file location="${PROJECT_ROOT}\Calibrator_2023a\for_testing" name="splash.png" optional="false">C:\Projects\iMeasure\ScanSuite\MatLAB\Calibrator_2023a\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}\Calibrator_2023a\for_testing" name="readme.txt" optional="true">C:\Projects\iMeasure\ScanSuite\MatLAB\Calibrator_2023a\for_testing\readme.txt</file>
     </build-deliverables>
     <workflow />
     <matlab>

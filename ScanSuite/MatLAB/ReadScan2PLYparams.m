@@ -1,5 +1,4 @@
 function [params]= ReadScan2PLYparams(paramsFileName)
-fprintf("Read parameters file: %s\n", paramsFileName);
     fid=fopen(paramsFileName);
     C = textscan(fid,'%f');
     fclose(fid);

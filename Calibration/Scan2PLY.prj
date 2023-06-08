@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="1212142006" file="C:\Projects\iMeasure\Calibration\CalibratorApp_2023a.prj" location="C:\Projects\iMeasure\Calibration" name="CalibratorApp_2023a" preferred-package-location="C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+  <configuration build-checksum="630173157" file="C:\Projects\iMeasure\Calibration\Scan2PLY.prj" location="C:\Projects\iMeasure\Calibration" name="Scan2PLY" preferred-package-location="C:\Projects\iMeasure\Calibration\Scan2PLY\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
     <param.appname>Scan2PLYapp</param.appname>
     <param.icon />
     <param.icons />
@@ -16,10 +16,10 @@
     <param.logo />
     <param.install.notes />
     <param.target.install.notes />
-    <param.intermediate>${PROJECT_ROOT}\CalibratorApp_2023a\for_testing</param.intermediate>
-    <param.files.only>${PROJECT_ROOT}\CalibratorApp_2023a\for_redistribution_files_only</param.files.only>
-    <param.output>${PROJECT_ROOT}\CalibratorApp_2023a\for_redistribution</param.output>
-    <param.logdir>${PROJECT_ROOT}\CalibratorApp_2023a</param.logdir>
+    <param.intermediate>${PROJECT_ROOT}\Scan2PLY\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\Scan2PLY\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\Scan2PLY\for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}\Scan2PLY</param.logdir>
     <param.enable.clean.build>false</param.enable.clean.build>
     <param.user.defined.mcr.options />
     <param.target.type>subtarget.standalone</param.target.type>
@@ -95,9 +95,9 @@
       <file>${PROJECT_ROOT}\StitchFrames.m</file>
     </fileset.depfun>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="readme.txt" optional="true">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\readme.txt</file>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="Scan2PLYapp.exe" optional="false">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\Scan2PLYapp.exe</file>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="splash.png" optional="false">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}\Scan2PLY\for_testing" name="Scan2PLYapp.exe" optional="false">C:\Projects\iMeasure\Calibration\Scan2PLY\for_testing\Scan2PLYapp.exe</file>
+      <file location="${PROJECT_ROOT}\Scan2PLY\for_testing" name="splash.png" optional="false">C:\Projects\iMeasure\Calibration\Scan2PLY\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}\Scan2PLY\for_testing" name="readme.txt" optional="true">C:\Projects\iMeasure\Calibration\Scan2PLY\for_testing\readme.txt</file>
     </build-deliverables>
     <workflow />
     <matlab>

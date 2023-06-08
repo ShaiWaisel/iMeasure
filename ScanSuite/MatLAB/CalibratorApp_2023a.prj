@@ -1,17 +1,17 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="1212142006" file="C:\Projects\iMeasure\Calibration\CalibratorApp_2023a.prj" location="C:\Projects\iMeasure\Calibration" name="CalibratorApp_2023a" preferred-package-location="C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
-    <param.appname>Scan2PLYapp</param.appname>
+  <configuration build-checksum="3179919182" file="C:\Projects\iMeasure\ScanSuite\MatLAB\CalibratorApp_2023a.prj" location="C:\Projects\iMeasure\ScanSuite\MatLAB" name="CalibratorApp_2023a" preferred-package-location="C:\Projects\iMeasure\ScanSuite\source_MatLAB\CalibratorApp_2023a\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>CalibratorApp</param.appname>
     <param.icon />
     <param.icons />
     <param.version>1.0</param.version>
-    <param.authnamewatermark />
+    <param.authnamewatermark>Shai Waisel</param.authnamewatermark>
     <param.email />
-    <param.company />
-    <param.summary />
+    <param.company>iMeasure Ltd.</param.company>
+    <param.summary>Calibration application to be run from ScanSuite</param.summary>
     <param.description />
     <param.screenshot />
     <param.guid />
-    <param.installpath.string>\Scan2PLYapp\</param.installpath.string>
+    <param.installpath.string>\iMeasure Ltd.\CalibratorApp\</param.installpath.string>
     <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
     <param.logo />
     <param.install.notes />
@@ -46,10 +46,7 @@
       <param.icon />
       <param.icons />
       <param.version />
-      <param.authnamewatermark />
       <param.email />
-      <param.company />
-      <param.summary />
       <param.description />
       <param.screenshot />
       <param.guid />
@@ -80,24 +77,15 @@
       <param.example />
     </unset>
     <fileset.main>
-      <file>${PROJECT_ROOT}\Scan2PLYApp.mlapp</file>
+      <file>C:\Projects\iMeasure\ScanSuite\source_MatLAB\CalibratorApp.mlapp</file>
     </fileset.main>
     <fileset.resources />
     <fileset.package />
-    <fileset.depfun>
-      <file>${PROJECT_ROOT}\AlignCloudToAxes.m</file>
-      <file>${PROJECT_ROOT}\blurMetric.m</file>
-      <file>${PROJECT_ROOT}\DoScan2PLY.m</file>
-      <file>${PROJECT_ROOT}\plane_intersect.m</file>
-      <file>${PROJECT_ROOT}\ReadFromSQLscan.m</file>
-      <file>${PROJECT_ROOT}\ReadScan2PLYparams.m</file>
-      <file>${PROJECT_ROOT}\sliceDXF.m</file>
-      <file>${PROJECT_ROOT}\StitchFrames.m</file>
-    </fileset.depfun>
+    <fileset.depfun />
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="readme.txt" optional="true">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\readme.txt</file>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="Scan2PLYapp.exe" optional="false">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\Scan2PLYapp.exe</file>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="splash.png" optional="false">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="readme.txt" optional="true">C:\Projects\iMeasure\ScanSuite\MatLAB\CalibratorApp_2023a\for_testing\readme.txt</file>
+      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="CalibratorApp.exe" optional="false">C:\Projects\iMeasure\ScanSuite\MatLAB\CalibratorApp_2023a\for_testing\CalibratorApp.exe</file>
+      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="splash.png" optional="false">C:\Projects\iMeasure\ScanSuite\MatLAB\CalibratorApp_2023a\for_testing\splash.png</file>
     </build-deliverables>
     <workflow />
     <matlab>

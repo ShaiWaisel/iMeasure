@@ -1,25 +1,25 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="1212142006" file="C:\Projects\iMeasure\Calibration\CalibratorApp_2023a.prj" location="C:\Projects\iMeasure\Calibration" name="CalibratorApp_2023a" preferred-package-location="C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
-    <param.appname>Scan2PLYapp</param.appname>
+  <configuration build-checksum="19867458" file="C:\Projects\iMeasure\ScanSuite\MatLAB\Scan2PLY_2023a.prj" location="C:\Projects\iMeasure\ScanSuite\MatLAB" name="Scan2PLY_2023a" preferred-package-location="C:\Projects\iMeasure\ScanSuite\MatLAB\Scan2PLY_2023a\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>Scan2PLYD</param.appname>
     <param.icon />
     <param.icons />
     <param.version>1.0</param.version>
-    <param.authnamewatermark />
+    <param.authnamewatermark>Shai Waisel</param.authnamewatermark>
     <param.email />
-    <param.company />
+    <param.company>iMeasure</param.company>
     <param.summary />
     <param.description />
     <param.screenshot />
     <param.guid />
-    <param.installpath.string>\Scan2PLYapp\</param.installpath.string>
+    <param.installpath.string>\iMeasure\Scan2PLYD\</param.installpath.string>
     <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
     <param.logo />
     <param.install.notes />
     <param.target.install.notes />
-    <param.intermediate>${PROJECT_ROOT}\CalibratorApp_2023a\for_testing</param.intermediate>
-    <param.files.only>${PROJECT_ROOT}\CalibratorApp_2023a\for_redistribution_files_only</param.files.only>
-    <param.output>${PROJECT_ROOT}\CalibratorApp_2023a\for_redistribution</param.output>
-    <param.logdir>${PROJECT_ROOT}\CalibratorApp_2023a</param.logdir>
+    <param.intermediate>${PROJECT_ROOT}\Scan2PLY_2023a\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\Scan2PLY_2023a\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\Scan2PLY_2023a\for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}\Scan2PLY_2023a</param.logdir>
     <param.enable.clean.build>false</param.enable.clean.build>
     <param.user.defined.mcr.options />
     <param.target.type>subtarget.standalone</param.target.type>
@@ -30,25 +30,23 @@
     <param.web.mcr.name>MyAppInstaller_web</param.web.mcr.name>
     <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
     <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
-    <param.windows.command.prompt>true</param.windows.command.prompt>
+    <param.windows.command.prompt>false</param.windows.command.prompt>
     <param.create.log>false</param.create.log>
     <param.log.file />
     <param.native.matlab>false</param.native.matlab>
     <param.checkbox>false</param.checkbox>
     <param.example />
     <param.help.text>Syntax 
-	  -? 
-	 
+	 Scan2PLYD -? 
+	 Scan2PLYD varargin 
  Input Arguments 
 	 -?  print help on how to use the application 
-	 input arguments</param.help.text>
+	 varargin  input arguments</param.help.text>
     <unset>
       <param.icon />
       <param.icons />
       <param.version />
-      <param.authnamewatermark />
       <param.email />
-      <param.company />
       <param.summary />
       <param.description />
       <param.screenshot />
@@ -72,7 +70,6 @@
       <param.web.mcr.name />
       <param.package.mcr.name />
       <param.no.mcr.name />
-      <param.windows.command.prompt />
       <param.create.log />
       <param.log.file />
       <param.native.matlab />
@@ -80,24 +77,22 @@
       <param.example />
     </unset>
     <fileset.main>
-      <file>${PROJECT_ROOT}\Scan2PLYApp.mlapp</file>
+      <file>${PROJECT_ROOT}\Scan2PLY.m</file>
     </fileset.main>
     <fileset.resources />
     <fileset.package />
     <fileset.depfun>
-      <file>${PROJECT_ROOT}\AlignCloudToAxes.m</file>
-      <file>${PROJECT_ROOT}\blurMetric.m</file>
-      <file>${PROJECT_ROOT}\DoScan2PLY.m</file>
-      <file>${PROJECT_ROOT}\plane_intersect.m</file>
-      <file>${PROJECT_ROOT}\ReadFromSQLscan.m</file>
-      <file>${PROJECT_ROOT}\ReadScan2PLYparams.m</file>
-      <file>${PROJECT_ROOT}\sliceDXF.m</file>
-      <file>${PROJECT_ROOT}\StitchFrames.m</file>
+      <file>C:\Projects\iMeasure\Calibration\blurMetric.m</file>
+      <file>C:\Projects\iMeasure\Calibration\DoScan2PLY.m</file>
+      <file>C:\Projects\iMeasure\Calibration\plane_intersect.m</file>
+      <file>C:\Projects\iMeasure\Calibration\ReadFromSQLscan.m</file>
+      <file>C:\Projects\iMeasure\Calibration\ReadScan2PLYparams.m</file>
+      <file>C:\Projects\iMeasure\Calibration\StitchFrames.m</file>
     </fileset.depfun>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="readme.txt" optional="true">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\readme.txt</file>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="Scan2PLYapp.exe" optional="false">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\Scan2PLYapp.exe</file>
-      <file location="${PROJECT_ROOT}\CalibratorApp_2023a\for_testing" name="splash.png" optional="false">C:\Projects\iMeasure\Calibration\CalibratorApp_2023a\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}\Scan2PLY_2023a\for_testing" name="readme.txt" optional="true">C:\Projects\iMeasure\ScanSuite\MatLAB\Scan2PLY_2023a\for_testing\readme.txt</file>
+      <file location="${PROJECT_ROOT}\Scan2PLY_2023a\for_testing" name="Scan2PLYD.exe" optional="false">C:\Projects\iMeasure\ScanSuite\MatLAB\Scan2PLY_2023a\for_testing\Scan2PLYD.exe</file>
+      <file location="${PROJECT_ROOT}\Scan2PLY_2023a\for_testing" name="splash.png" optional="false">C:\Projects\iMeasure\ScanSuite\MatLAB\Scan2PLY_2023a\for_testing\splash.png</file>
     </build-deliverables>
     <workflow />
     <matlab>

@@ -1,0 +1,1 @@
+scan2plyApp.exe "C:\Projects\iMeasure\Scans\Calibration\calibh003a.db" "paramsScan2PLY.txt" "out.ply" 
