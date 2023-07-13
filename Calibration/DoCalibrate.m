@@ -94,7 +94,8 @@ for sensor=1:length(sensors)
         imshow(image{sensor},'Parent', ax);
         hold(ax,'on');
     end
-
+    r={};
+    e={};
     MIN_PIX_SPOT = 50;
     for colorCode=1:4
         if (size(transMats{sensor},1) >= 0)
@@ -153,7 +154,7 @@ for sensor=1:length(sensors)
     end
 
 end
-if (app ~= 0)
+if (app ~= 0) && (length(e)>0)
     app.lblMat1err.Text = sprintf('Error (m):   %f',e{1}.errmax);
     app.lblMat1det.Text = sprintf('Determinant: %f',det(transMats{1}));
     app.lblMat2err.Text = sprintf('Error (m):   %f',e{2}.errmax);
@@ -162,15 +163,28 @@ if (app ~= 0)
     app.lblMat3det.Text = sprintf('Determinant: %f',det(transMats{3}));
     drawnow;
 end
-fid = fopen(outputFileName,'wt');
-fprintf(fid, 'Completed,100,OK\n');
+failed = 0;
 for sensor=1:length(sensors)
-    mat = transMats{sensor}; 
-    numbers = reshape(mat,1,[]); 
-    line = sprintf("%s,%s,%s,16,%s\n",sensors{sensor},devices{sensor},locations{sensor},outMat(numbers));
-    fprintf(fid, line);
-    tform = affinetform3d(mat');
-    transWalls{sensor} = pctransform(wall{sensor}, tform);
+    if (size(transMats{sensor},1) == 0)
+        failed = 1;
+        paramCode = -1;
+    end
+end
+fid = fopen(outputFileName,'wt');
+if (failed)
+fprintf(fid, 'Could not detect checkerboard calibration,0,Failed\n');
+else    
+fprintf(fid, 'Completed,100,OK\n');
+end;
+if (~failed)
+    for sensor=1:length(sensors)
+        mat = transMats{sensor}; 
+        numbers = reshape(mat,1,[]); 
+        line = sprintf("%s,%s,%s,16,%s\n",sensors{sensor},devices{sensor},locations{sensor},outMat(numbers));
+        fprintf(fid, line);
+        tform = affinetform3d(mat');
+        transWalls{sensor} = pctransform(wall{sensor}, tform);
+    end
 end
 fclose(fid);
 end
