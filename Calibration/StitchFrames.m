@@ -17,7 +17,9 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
     fullFixed = fixed;
     goodShotIndex = 0;
     if (verbose)
+        if (frameSpan(2) > frameSpan(1))
         params.FrameGauge.Limits = [frameSpan(1), frameSpan(2)];
+        end
     end;
     for frame=frameSpan(1):frameSpan(2)
         if (verbose)
@@ -52,7 +54,7 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
         original = pccat(clouds);
     %    [planes, modified, planars, bounds{loop}, edges{loop}, corners{loop}] = SetPlanarAreas(original, 0.01, 20000);
         [planes, modified, planars, bounds{loop}, edges{loop}, corners{loop}] = SetPlanarAreas(original, params.PlaneError, params.PlanePoints, 0);
-        if (size(planes,1) > 2) && (blurred < 0.4)
+        if (size(planes,1) > 2) && (blurred < 1)
             goodShotIndex = goodShotIndex + 1;
             fprintf('Input frame  %d, points %d, planes %d\n',loop, size(original.Location,1), size(planes,1));
             fullMoving = pcdownsample(modified, 'gridAverage', params.ICPgrid);
@@ -84,7 +86,7 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
     if (verbose)
         params.DisplayGauge.Value = 1;
         params.DisplayGauge.Visible = 1;
-        params.DisplayGauge.Limits = [1, size(tMats,2)];
+        params.DisplayGauge.Limits = [0, size(tMats,2)];
     end
     
     for frame = 2:size(tMats, 2)
@@ -104,21 +106,24 @@ function [scannedModel] = StitchFrames(rawData, sensors, transMats, frameSpan, p
                 newFrame = pccat([newFrame, newPoints]);
             end
         end
+        [planes, modified, planars, bounds{loop}, edges{loop}, corners{loop}] = SetPlanarAreas(scannedFrame, params.PlaneError, params.PlanePoints, 0);
         accumTform.T = tform.T * accumTform.T;
     
-        scannedFrame = pctransform(scannedFrame, accumTform);
-        points = pctransform(scannedFrame,accumTform);
-        newFrame = pctransform(newFrame, accumTform);
-    %     scannedModel = pccat([scannedModel, points]);
-    %     accumTform.T = tform.T * accumTform.T;
-    
-        fixed = pcdownsample(scannedModel, 'gridAverage', params.ICPgrid);
-        %points = pctransform(points,accumTform);
-        moving = pcdownsample(scannedFrame, 'gridAverage', params.ICPgrid);
-        tf = pcregistericp(moving, fixed, 'Metric','PlaneToPlane','Tolerance', [params.PointsTolerance params.ICPgrid] );
-        %accumTform.T = tf.T * accumTform.T;
-        newFrame = pctransform(newFrame, tf);
-        scannedModel = pccat([scannedModel, newFrame]);
+        scannedFrame = pctransform(modified, accumTform);
+        scannedModel = pccat([scannedModel, scannedFrame]);
+    % % %   
+    % %     points = pctransform(scannedFrame,accumTform);
+    % %     newFrame = pctransform(newFrame, accumTform);
+    % %     scannedModel = pccat([scannedModel, points]);
+    % % %     accumTform.T = tform.T * accumTform.T;
+    % % 
+    % %     fixed = pcdownsample(scannedModel, 'gridAverage', params.ICPgrid);
+    % %     %points = pctransform(points,accumTform);
+    % %     moving = pcdownsample(scannedFrame, 'gridAverage', params.ICPgrid);
+    % %     tf = pcregistericp(moving, fixed, 'Metric','PlaneToPlane','Tolerance', [params.PointsTolerance params.ICPgrid] );
+    % %     %accumTform.T = tf.T * accumTform.T;
+    % %     newFrame = pctransform(newFrame, tf);
+    % %     scannedModel = pccat([scannedModel, newFrame]);
         if (verbose)
             params.DisplayGauge.Value = frame;
             drawnow;
@@ -195,6 +200,7 @@ function [planes, modified, planars, boundsList, edges, corners] = SetPlanarArea
     planes2go = 1;      
     planes = [];
     planars = pointCloud([0,0,0]);
+    cleanCloud = pointCloud([0,0,0]);
     while (planes2go > 0)
         [plane,inlierIndices,outlierIndices] = pcfitplane(ptc, maxDistance,referenceVector,maxAngularDistance);
         if (size(inlierIndices, 1) > planeInPixels)
@@ -222,17 +228,29 @@ function [planes, modified, planars, boundsList, edges, corners] = SetPlanarArea
             newCloud = pointCloud(newLocs);
             planes = [planes; [plane.Parameters, newCloud.Location(1,:)] ];
             newCloud.Color = ptc.Color(inlierIndices, :);
+
+            [labels,numClusters] = pcsegdist(newCloud,0.05);
+            for cluster = 1:numClusters
+                f1 = select(newCloud,labels==cluster);
+                if (size(f1.Location,1) > 1000)
+                    if (size(cleanCloud.Location,1) < 2)
+                        cleanCloud = f1;
+                    else
+                        cleanCloud = pccat([cleanCloud, f1]);
+                    end
+                end
+            end
             if (modified == 0)
-                modified = newCloud;
+                modified = cleanCloud;
             else
-                modified = pccat([modified; newCloud]);
+                modified = pccat([modified; cleanCloud]);
             end
             ptc = outliers;
         else
             planes2go = 0;
         end
     end
-    modified = pccat([modified; ptc]);
+    %modified = pccat([modified; ptc]);
     intersects = [];
     for i=1:size(planes,1)
         for j=i+1:size(planes,1)

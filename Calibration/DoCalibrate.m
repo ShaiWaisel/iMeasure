@@ -80,6 +80,8 @@ if (VERBOSE)
     figure; axis equal; hold on; 
     hAxes = gca;
 end
+r={};
+e={};
 for sensor=1:length(sensors)
     if (app ~= 0)
         app.TabGroup.SelectedTab = app.TabGroup.Children(sensor);
@@ -94,8 +96,6 @@ for sensor=1:length(sensors)
         imshow(image{sensor},'Parent', ax);
         hold(ax,'on');
     end
-    r={};
-    e={};
     MIN_PIX_SPOT = 50;
     for colorCode=1:4
         if (size(transMats{sensor},1) >= 0)
