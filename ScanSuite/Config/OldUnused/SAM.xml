@@ -1,0 +1,18 @@
+﻿<!--Core config file-->
+<CoreConfig>
+  <General
+    UpdateTime="29/10/2019 11:23:00"
+    OpMode="Default" />
+  <CoreInfo
+    DisplayName="tt"
+    Description=""
+    ExeFileFullPath=""
+    Activation="Manual"
+    CommMode="Default"
+    CommandAddress="99.99.99.99"
+    CommandPort="9999"
+    ExtInfo=""
+    Flags="1"
+    AliveWaitTimeout="5000"
+    CameraName="" />
+</CoreConfig>

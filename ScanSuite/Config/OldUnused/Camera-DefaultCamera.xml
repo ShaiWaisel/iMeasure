@@ -1,0 +1,27 @@
+﻿<!--Camera config file-->
+<CameraConfig>
+  <General
+    UpdateTime="21/10/2019 12:39:55"
+    OpMode="Default"
+    CameraName="DefaultCamera" />
+  <CameraParameters
+  	ParamsFormat="Standard"
+    Resolution="VGA(640X480)"
+    DepthFrameRate="30"
+    DepthRangeMode="Default"
+    DepthCorrection="On"
+    DepthDynamicCalibrationMode="Off"
+    RGBFrameRate="30"
+    RGBExposureMilisecond="16"
+    RGBGain="2"
+    InfraredFrameRate="30"
+    InfraredExposureMilisecond="15"
+    InfraredGain="3"
+    InfraredAutoExposure="15"
+    InfraredDisableIntensityBalance="On"
+    ActiveCamerasMask="Left-And-Right"
+    FrameSync="Off"
+    StreamAccelerometer="Off"
+    StreamGycoscope="Off"
+    IMUSampleRate="800" />
+</CameraConfig>

@@ -1,0 +1,2 @@
+calibratorApp.exe "C:\Projects\iMeasure\ScanSuite\Testing\calibrationScan.db" "C:\Projects\iMeasure\ScanSuite\Testing\calibrationParams.txt" "C:\Projects\iMeasure\ScanSuite\Testing\calibrationData.txt" "0"
+rem calibrator.exe "C:\Projects\iMeasure\ScanSuite\Testing\calibrationScan.db" "C:\Projects\iMeasure\ScanSuite\Testing\calibrationParams.txt" "C:\Projects\iMeasure\ScanSuite\Testing\calibrationData2.txt" 0

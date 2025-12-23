@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- IMeasure suite config file -->
+<SensorsMainConfig>
+ 		<!-- -->
+		<!-- General Definitions: -->
+		<!-- OpMode: "Default" (single thread mode)  / "MultiThreadCapture" : capture session handling mode -->
+		<!-- SensorsMask: bits  to be matched against the mask index so as to indicate which sensor to activate -->
+		<!-- 			for example: mask = 2 <bit 1> matches sensor with mask index 2 / 3 <bit 1+2> matches sensors with mask index 1+2 -->
+		<!-- KeepFramesInDBCounter  0: No count limit, keep all / N: Number of frames to hold, older frames erased  -->
+		<!-- ____________________________________________________________________________________________________________________________ -->
+  <General OpMode="Default" 
+  				  SensorsNo="4"
+  				  SensorsMask="3"
+    			  KeepFramesInDBCounter="1200"		   				  
+ 				  UpdateTime="15/06/2022 10:00:00" /> 
+   <Sensor1
+   	DeviceID="f1230616"
+   	MaskIndex="1"
+    displayName="RealSense-L515-Front"
+    location="Left"
+    matrixID="Def001"
+    type="Lidar"
+    subtype="L515"
+    sensorName="RealSense-L515" 
+    configFileName="RS_Default.xml"  		    
+    extendedInfo="[Prm]:[Value];[Prm]:[Value]" />
+  <Sensor2 
+   	DeviceID="f1230591"
+   	MaskIndex="2"
+   	displayName="RealSense-L515-Left"
+    location="Right"
+     matrixID="Def001"
+      type="Lidar"
+    subtype="L515"
+    sensorName="RealSense-L515" 
+    configFileName="RS_Default.xml"	        
+    extendedInfo="[Prm]:[Value];[Prm]:[Value]" />
+     <Sensor3
+   	DeviceID="f1230436"
+   	MaskIndex="4"
+   	displayName="RealSense-L515-Left"
+    location="Back"
+     matrixID="Def001"
+    type="Lidar"
+    subtype="L515"
+    sensorName="RealSense-L515" 
+    configFileName="RS_Default.xml"	        
+    extendedInfo="[Prm]:[Value];[Prm]:[Value]" />
+    <Sensor4
+   	DeviceID="f0171824"
+   	MaskIndex="8"
+   	displayName="RealSense-L515-Left"
+    location="Back"
+     matrixID="Def001"
+    type="Lidar"
+    subtype="L515"
+    sensorName="RealSense-L515" 
+    configFileName="RS_Default.xml"	        
+    extendedInfo="[Prm]:[Value];[Prm]:[Value]" />
+ </SensorsMainConfig>

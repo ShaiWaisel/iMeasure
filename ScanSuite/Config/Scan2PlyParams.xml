@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- iScan Scan 2 Ply params config file -->
+<Scan2PlyParams>
+ 		<!-- -->
+		<!-- General Definitions: -->
+		<!-- ____________________________________________________________________________________________________________________________ -->
+
+  <General StartFrame="0" 
+  				  EndFrame="0" 
+  				  PlaneError="0.05" 
+  				  ICPGridSize="0.05" 
+  				  PointsTolerance="0.002" 
+  				  FrameMargins="10" 
+  				  PlanePoints="5000" 
+  				  AlignModel="1"   				  
+  			 > 
+  </General>
+</Scan2PlyParams>

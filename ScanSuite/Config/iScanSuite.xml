@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- iScan suite config file -->
+<iScanSuiteConfig>
+ 		<!-- -->
+		<!-- General Definitions: -->
+		<!-- .... OpMode								["Default":use internal class default definition]  -->
+		<!-- .... DatabasePath							[<database File Path >]  -->
+		<!-- .... ScanDatabaseName				[<db name >]   display scan db name     	- "SAMCore.db" -->
+		<!-- .... PersistentDataFilePath			[<db name>]  persistent config db name 	- "iMeasure.db" -->
+		<!-- .... ConfigFilePath						[<File Path >] -->
+		<!-- .... LogFilePath							[<File Path >] -->
+		<!-- .... ScanProjectsPath					[<File Path >] -->
+		<!-- .... CalibrationProjectsPath			[<File Path >] -->
+		<!-- .... SAMCoreExeFileName			[<File Name >] executable file name       	- "SamCore.exe"-->
+		<!-- .... SAMCoreCommPort				[<Port #>] TCP port number						- 8200 -->
+		<!-- .... SAMCoreAckTimeout				[<Mili seconds >] time to wait for acknowlegment on command execution -->
+		<!-- .... SAMCoreCaptureStreamMask	[Bitwise settings] the streams to load: Bit 0: Color,	Bit 1: X , Bit 2: Y,	Bit 3: Z,	Bit 4: U, Bit 5: V  (for example: 1=RGB only / 15=RGB+X+Y+Z -->	
+		<!-- .... ALGOCoreExeFileName			[<File Name >] executable file name       	- "SamCore.exe"-->
+		<!-- .... ALGOCoreCommPort				[<Port #>] TCP port number						- 8153 -->
+		<!-- .... ALGOCoreAckTimeout			[<Mili seconds >] time to wait for acknowlegment on command execution -->
+		<!-- .... ALGOCoreCommandLineFlags [ string representing the command line flags to add  -->
+		<!-- .... MATRIXCoreExeFileName			[<File Name >] executable file name       	- "MatrixCore.exe"-->
+		<!-- .... MATRIXCoreCommPort				[<Port #>] TCP port number						- 8154 -->
+		<!-- .... MATRIXCoreAckTimeout			[<Mili seconds >] time to wait for acknowlegment on command execution -->
+		<!-- .... MATRIXCoreCommandLineFlags [ string representing the command line flags to add  -->
+		<!-- .... MATRIXFramesSnapPerClick  [# of  frames to capture contunuesly per snap click] -->
+		<!-- .... MATRIXFramesSnapTimeout   [milisec time out between frames snap] -->		
+		<!-- .... MATRIXDbgMode                  [0: No / 1: Yes] -->
+		<!-- .... PLYViewerExeFpath				[<File full path Name >] executable full path - "C:\\Program Files\\VCG\\MeshLab\\MeshLab.exe" -->		
+		<!-- .... PLYViewerExeArguments		[< arguments to add to exe run command >] - "" -->				
+		<!-- .... MaxScanFramesAllowed 		[Max frames to capture in scan session ]  -->		
+		<!-- .... ReportEventMask					[Event reporting mode ["Default":use internal class default definition] / ["0000".:bit mask 0:no reporting , bit-1:display events] -->
+		<!-- .... LogDataStreamsMask				[Log data streams communication mask [0x0:no log ,0x1:Error ,0x2:Warnings , 0x4:Info] -->
+		<!-- ____________________________________________________________________________________________________________________________ -->
+
+  <General OpMode="Default" 
+  				  DatabasePath="\Database"
+   				  ScanDatabaseName="SAMCore.db"
+   				  PersistentDatabaseName="iMeasure.db"
+ 				  ConfigFilePath="\Config"  				  		
+  				  LogFilePath="\Logs"		  				 		
+  				  ScanProjectsPath="\Scans"		  		
+  				  CalibrationProjectsPath="\Calibration"	
+ 				  SAMCoreExeFileName="SamCore.exe"		  	  				  	  			 					  	  			 		
+ 				  SAMCoreCommPort="8200"		  	  				  	  			 		
+ 				  SAMCoreAckTimeout="5000"		  	  				  	  			 		
+ 				  SAMCoreDisplayStreamMask="1"		  	  
+ 				  SAMCoreCaptureStreamMask="15"		  	  
+ 				  ALGOCoreExeFileName="Scan2ply.exe"	 	  	  		 				   				  	  		
+ 				  ALGOCoreCommPort="8153"		  	
+ 				  ALGOCoreAckTimeout="2000"		  	
+				  ALGOCoreCommandLineFlags=""		  	 				  
+  				  MATRIXCoreExeFileName="Calibrator.exe"	  				  	  				  	  		
+				  MATRIXCoreCommPort="8154"		  	
+ 				  MATRIXCoreAckTimeout="2000"		  	
+				  MATRIXCoreCommandLineFlags=""	
+				  MATRIXFramesSnapPerClick="2"	  	 				  
+ 				  MATRIXFramesSnapTimeout="40"	  	 				 
+ 				  MATRIXDbgMode="0"	  	 				  
+                  PLYViewerExeFpath = "C:\Program Files\VCG\MeshLab\MeshLab.exe"
+                  PLYViewerExeArguments = ""                  
+ 				  MaxScanFramesAllowed="1000"					     				  			  			  
+ 				  ReportEventsMask="1"	
+  				  LogDataStreamsMask="7"		  				  			  
+  			 > 
+  </General>
+</iScanSuiteConfig>

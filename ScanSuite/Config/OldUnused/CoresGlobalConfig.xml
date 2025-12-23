@@ -1,0 +1,7 @@
+﻿<!--Core global configuration file-->
+<CoresGlobalConfig>
+  <General
+    UpdateTime="23/08/2022 9:00:19"
+    OpMode="Default"
+    SelectedCoreName="SAM" />
+</CoresGlobalConfig>

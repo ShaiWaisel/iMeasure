@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- IMeasure suite config file -->
+<IMeasureSuiteConfig>
+ 		<!-- -->
+		<!-- General Definitions: -->
+		<!-- .... OpMode:               ["Default":use internal class default definition]  -->
+		<!-- .... DataFilePath       		[<File Path >] -->
+		<!-- .... ConfigFilePath       	[<File Path >] -->
+		<!-- .... LogFilePath:  				[<File Path >] -->
+		<!-- .... CoresConfigFileName: 	[<File Name >] -->
+		<!-- .... ReportEventMask:      [Event reporting mode ["Default":use internal class default definition] / ["0000".:bit mask 0:no reporting , bit-1:display events] -->
+		<!-- .... LogDataStreamsMask:   [Log data streams communication mask [0x0:no log ,0x1:Error ,0x2:Warnings , 0x4:Info] -->
+		<!-- ____________________________________________________________________________________________________________________________ -->
+
+  <General OpMode="Default" 
+  				  DataFilePath="\Data"
+  				  ConfigFilePath="\Config"  				  		
+  				  LogFilePath="\Logs"		  				 		
+  				  ScanProjectsPath="\Scans"		  		
+  				  CalibrationProjectsPath="\Calibration"	
+ 				    CoresConfigFileName="CoresGlobalConfig.xml"	  				  	  			 		
+  				  ReportEventsMask="1"	
+  				  LogDataStreamsMask="7"		  				  			  
+  			 > 
+  </General>
+</IMeasureSuiteConfig>

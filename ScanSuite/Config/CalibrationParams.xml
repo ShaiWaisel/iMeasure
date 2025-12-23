@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- iScan suite config file -->
+<CalibrationParams>
+ 		<!-- -->
+ 		<!--   	FrameMargins - in % -->			
+		<!-- General Definitions: -->
+		<!-- ____________________________________________________________________________________________________________________________ -->
+
+  <General CameraPosX="0.75" 
+  				  CameraPosY="0.75" 
+  				  CameraPosZ="0.5" 
+  				  LookAtX="1.5" 
+  				  LookAtY="1.5" 
+  				  LookAtZ="0.5" 
+  				  SquareSize="0.1" 
+  				  FrameMargins="10"   				  
+  			 > 
+  </General>
+</CalibrationParams>

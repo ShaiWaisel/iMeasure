@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- IMeasure core config file -->
+<IMeasureCore>
+ 		<!-- -->
+		<!-- SDatabaseFilePath =  if includes a ':' assumed full path otherwise attached to exe pah 	-->
+		<!-- SQLiteConnectionString = :memory:" 	-->
+		<!-- SQLiteInitMode =  0-keep existing DB / 1-Delete existing 	-->
+		<!-- SQLitePersistantDbConnectionString + sufix  =  general use persistant DB (for data that must be retained between executes 	-->
+		<!-- SQLitePersistantDbConnectionString + sufix  =  general use persistant DB (for data that must be retained between executes 	-->
+		<!-- SQLiteInitMode  =  0:Drop global parma / 1: drop -->
+		<!-- SQLiteSyncAccess  =  0:No external sync (mutex/sema) / 1: use external syncp -->
+		 <!-- SensorsConfigFileName =  <source type>:<Name> ("file:SensorsMain.xml" - from file / "db:iMeasure.db" = from database) -->
+		<!--  ExecClassName =  "ImxRealSenseCore"	  -->		
+		<!--  PointsCloudHandlingMode = "0:Use RealSence internal functions / 1: Dummy blobs    -->		
+		<!-- KeepFramesInDB4DisplayMode  0: No count limit, keep all / N: Number of frames to hold, older frames erased  -->
+		<!-- KeepFramesInDB4ScanMode  0: No count limit, keep all / N: Number of frames to hold, older frames erased  -->
+		<!--  LogLevel  = 0-No Log / Bit-0:INF / Bit-1:DBG / Bit-2:WARN / Bit-3:ERR / Bit-4:EXTENDED / Bit-5:STREAMING / Bit-6:FRAMES   (15-default / 79-with frames) -->		
+		<!--  DebugMask = 0-None / Bit-0:Skip Point cloud Handling / Bit-1 - Skip blob data write	/ Bit-2 - Apply capture time span handling / Bit-3 - Print sensor options 2 log -->		
+		<!--                                   Bit-4 - Skip device settingsd                                                                                                                                                                   -->		
+		<!--    -->		
+		<!--    CommandProtocolClass = "http"  / "": no communication interface                                                                                                                                                               -->		
+		<!--    -->		
+	   <!-- ____________________________________________________________________________________________________________________________ -->
+  <General OpMode="Default" 
+  				  DataFilePath="Data"
+  				  ConfigFilePath="Config"  				  		
+  				  LogFilePath="Logs"	
+ 				  DatabaseFilePath="Database"	  				  
+  				  LogFileName="SAMCore.log"	  				 		
+  				  ScanProjectsPath="Scans"		  		
+  				  CalibrationProjectsPath="Calibration"
+  				  SQLiteConnectionDefaultPrefix="DefaultProject\DefaultBuilding\DefualtLevel\DefaultArea"
+  				  SQLiteConnectionSufix="SAMCore.db"
+  				  SQLiteConnectionString=""
+  				  SQLiteInitMode="0"
+  				  SQLiteSyncAccess="0"
+  				  SQLitePersistantDbConnectionSufix="iMeasure.db"		  
+  				  SQLitePersistantDbConnectionString=""  				  
+  				  SensorsConfigFileName="db:iMeasure.db"  	  			 		
+  				  DefaultPlatform="BaseP001"	  				  	  			 		
+ 				  ExecClassName="ImxRealSenseCore"
+ 				  PointsCloudHandlingMode="0"  	
+    			  KeepFramesInDB4DisplayModeCounter="200"		   				  
+    			  KeepFramesInDB4ScanModeCounter="1200"		   				  			  
+  				  ReportEventsMask="1"	
+  				  LogLevel ="15"
+  				  LogMaxSize="10485760"
+  				  LogBackupMode="1"	  			
+  				  DebugMask = "0"  
+  			 /> 
+    <Comm  CommandProtocolClass="http" 		
+    			  CommandListenPort="8200" 
+  				  CommandMaxByteLen="2048"		  		
+  			 /> 
+</IMeasureCore>

@@ -1,0 +1,33 @@
+﻿<!-- Sensor config file -->
+<!-- -->
+<!--  Resolution: <num>X<num>																 							  -->
+<!--                    Depth - 320X240 / 640X480 / 2024 X 768                                                      -->
+<!--                    RGB  - 960X540 / 1280X720 / 1920X1080                                                      -->
+<!--   FPS (frames per second):  <not all values 1..30 supported> 30 and 15 tested                -->
+<!--   Depth Confidence Threshold :  0..3    step 1                                                                           -->
+<!--   RGB_BacklightCompensation:  Number between 0 .. 255    step 1                                  -->
+<!--   AutoExposureFramesNo:  Number between 0 .. 30    # of frames to throw for to let auto-exposure to settle -->
+<!-- -->
+<!--   If  value = "Default" use internal coded default value -or- dont set at all -->
+<!-- -->
+<!-- ____________________________________________________________________________________________________________________________ -->
+<SensorConfig>
+  <General
+    UpdateTime="21/10/2019 12:39:55"
+    OpMode="Default" />
+  <SensorParameters
+  	ParamsFormat="Standard"
+    Depth_Resolution="640X480"
+    Depth_FrameRate="30"
+    Depth_Format="Z16"
+    Depth_ConfidenceThreshold="Default"
+    RGB_Resolution="1280X720"
+    RGB_FrameRate="30"
+    RGB_Format="RGB8"
+    RGB_BacklightCompensation = "Default"
+    DbgRGBFrameByteSize="3686400"
+    DbgDepthFrameByteSize="3686400"
+    DbgInfraredFrameByteSize="3686400"
+    AutoExposureFramesNo = "30"    
+    ExtInfo="[ATTR]-[VAL];[ATTR]-[VAL]" />
+</SensorConfig>

@@ -1,0 +1,18 @@
+﻿<!--Core config file-->
+<CoreConfig>
+  <General
+    UpdateTime="23/08/2022 9:17:35"
+    OpMode="Default" />
+  <CoreInfo
+    DisplayName="IMeasure"
+    Description=""
+    ExeFileFullPath="C:\Data\Erez\Private\Ventures\IMeasure\Projects\Bin\Debug\IMeasureCore.exe"
+    Activation="Manual"
+    CommMode="Default"
+    CommandAddress="19.16.5.55"
+    CommandPort="5555"
+    ExtInfo=""
+    Flags=""
+    AliveWaitTimeout="5000"
+    CameraName="" />
+</CoreConfig>
